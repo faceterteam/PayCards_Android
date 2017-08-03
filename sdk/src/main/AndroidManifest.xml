@@ -1,0 +1,24 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="cards.pay.paycardsrecognizer.sdk">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+
+    <uses-feature
+        android:name="android.hardware.CAMERA"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.AUTOFOCUS"
+        android:required="false" />
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <application>
+        <activity
+            android:name="cards.pay.paycardsrecognizer.sdk.ui.ScanCardActivity"
+            android:theme="@style/wocr_RecognizerTheme" />
+    </application>
+
+
+</manifest>

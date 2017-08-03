@@ -1,0 +1,10 @@
+<resources>
+    <string translatable="false" name="wocr_cardspayrecognizer_library">pay.cards library</string>
+
+        <!-- Scan Card screen -->
+    <string name="wocr_hint_position_card_in_frame">Position your card in this frame</string>
+    <string name="wocr_button_enter_card_number">Enter card details manually</string>
+    <string name="wocr_toggle_flash">Toggle flash</string>
+    <string name="wocr_powered_by_pay_cards" translatable="false">Powered by pay.cards</string>
+
+</resources>

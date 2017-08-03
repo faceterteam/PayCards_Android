@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <color name="wocr_primary_dark">#00897B</color>
+    <color name="wocr_primary">#26a69a</color>
+    <color name="wocr_accent">#26a69a</color>
+    <color name="wocr_default_window_background">#000</color>
+    <color name="wocr_card_shadow_color">#a5080808</color>
+    <color name="wocr_manual_input_color_pressed">#20ffffff</color>
+    <color name="wocr_manual_input_color">#05000000</color>
+    <color name="wocr_paycards_link_color">#80ffffff</color>
+    <color name="wocr_tablet_screen_bg">#BB000000</color>
+
+</resources>

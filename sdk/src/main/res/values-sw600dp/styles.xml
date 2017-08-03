@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="wocr_RecognizerTheme" parent="wocr_RecognizerTheme.TransparentStatusBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/wocr_tablet_screen_bg</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+</resources>

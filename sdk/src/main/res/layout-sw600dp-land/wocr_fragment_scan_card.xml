@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    tools:background="@color/wocr_tablet_screen_bg"
+    tools:context=".ui.ScanCardActivity">
+
+    <RelativeLayout
+        android:id="@+id/wocr_main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        tools:context=".ui.activities.ScanCardActivity">
+
+        <cards.pay.paycardsrecognizer.sdk.ui.views.TabletCardRecognitionHolderLinearLayout
+            android:id="@+id/wocr_tablet_card_recognition_holder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="@dimen/wocr_tablet_card_land_top_bottom_margin"
+            android:layout_marginTop="@dimen/wocr_tablet_card_land_top_bottom_margin"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <include layout="@layout/wocr_include_card_detection_layout" />
+
+        </cards.pay.paycardsrecognizer.sdk.ui.views.TabletCardRecognitionHolderLinearLayout>
+
+        <cards.pay.paycardsrecognizer.sdk.ui.views.ButtonWithTopBorder
+            android:id="@+id/wocr_tv_enter_card_number_id"
+            style="@style/wocr_EnterManuallyButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/wocr_button_enter_card_number" />
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/wocr_iv_flash_id"
+            style="@style/wocr_FlashButton"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/wocr_ic_flash"
+            tools:visibility="visible"
+            tools:ignore="RtlHardcoded" />
+
+    </RelativeLayout>
+
+    <cards.pay.paycardsrecognizer.sdk.ui.views.ProgressBarIndeterminate
+        android:id="@+id/wocr_progress_bar"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:visibility="visible" />
+
+</FrameLayout>

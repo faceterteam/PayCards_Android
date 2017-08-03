@@ -1,0 +1,67 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize">
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/button_next"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:background="?selectableItemBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:layout_margin="0dp"
+            android:text="@string/all_button_next" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="?actionBarSize"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="270dp"
+            android:src="@drawable/intro_card"
+            android:adjustViewBounds="true"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:gravity="center_horizontal"
+            android:text="PAY.CARDS"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/text1"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:gravity="center_horizontal"
+            android:maxWidth="300dp"
+            android:text="@string/intro_tagline"
+            android:textColor="?android:textColorSecondary" />
+
+    </LinearLayout>
+
+</LinearLayout>

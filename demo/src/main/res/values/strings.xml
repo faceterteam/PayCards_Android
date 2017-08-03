@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Pay.Cards</string>
+
+    <string name="all_button_next">Next</string>
+
+    <string name="intro_tagline">Best way to recognize number, holder name and expiration date from bank card offline</string>
+
+    <string name="carddetails_card_title">Card details</string>
+    <string name="carddetails_subhead">Verify and complete your card information</string>
+    <string name="carddetails_card_number_field_label">Card number</string>
+    <string name="carddetails_cardholder_field_label">Cardholder name</string>
+    <string name="carddetails_expiry_date_field_label">Expiry date</string>
+
+    <string name="final_title">All Right!</string>
+    <string name="final_licence_button">Licence</string>
+    <string name="final_download_sdk_button">Download SDK</string>
+
+    <string name="validation_error_fill_in_expiry_date">Fill in expiration date</string>
+    <string name="validation_error_invalid_expiry_date">Invalid expiration date</string>
+    <string name="validation_error_fill_in_card_holder_name">Fill in card holder name</string>
+    <string name="validation_error_invalid_card_holder_name">Invalid card holder name</string>
+    <string name="validation_error_fill_in_card_number">Fill in card number</string>
+    <string name="validation_error_invalid_card_number">Invalid card number</string>
+    <string name="scan">Scan card</string>
+
+</resources>

@@ -1,0 +1,66 @@
+apply plugin: 'com.android.application'
+
+uploadArchives.enabled = false
+
+ext.private = new Properties()
+if (rootProject.file('private.properties').exists()) {
+    ext.private.load(new FileInputStream(rootProject.file('private.properties')));
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        applicationId "cards.pay.sample.demo"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode Integer.parseInt(DEMO_APP_VERSION_CODE)
+        versionName DEMO_APP_VERSION_NAME
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        resConfigs "en"
+    }
+    signingConfigs {
+        release
+        debug
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            applicationIdSuffix ".dbg"
+            minifyEnabled false
+            jniDebuggable true
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(path: ":sdk")
+    //debugCompile project(path: ":sdk", configuration: 'release')
+    //releaseCompile project(path: ":sdk", configuration: 'release')
+    androidTestCompile("com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibVersion"
+    compile "com.android.support:gridlayout-v7:$rootProject.ext.supportLibVersion"
+    compile "com.android.support:design:$rootProject.ext.supportLibVersion"
+    testCompile "junit:junit:$rootProject.ext.junitVersion"
+}
+
+if (ext.private.getProperty("release.StoreFile") != null) {
+    android.signingConfigs['release'].storeFile = file(ext.private['release.StoreFile'])
+    android.signingConfigs['release'].storePassword = ext.private['release.StorePassword']
+    android.signingConfigs['release'].keyAlias = ext.private['release.KeyAlias']
+    android.signingConfigs['release'].keyPassword = ext.private['release.KeyPassword']
+} else {
+    android.buildTypes['release'].signingConfig = null
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <color name="wocr_tablet_screen_bg">#BB000000</color>
+    <color name="wocr_primary_dark">#000000</color>
+    <color name="wocr_primary">@android:color/transparent</color>
+
+</resources>

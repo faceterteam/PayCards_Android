@@ -1,0 +1,51 @@
+This document contains the list of Third Party Software included with 
+PayCards library, along with the license information.
+
+Project: Caffe
+URL: http://caffe.berkeleyvision.org/
+Developers: Berkeley AI Research (BAIR) and community contributors.
+License: BSD 2-Clause License
+Reference: https://github.com/BVLC/caffe/blob/master/LICENSE
+
+Project: Eigen
+URL: http://eigen.tuxfamily.org
+License: MPL2, LGPL3+.
+Reference: http://eigen.tuxfamily.org/index.php?title=Main_Page#License
+
+Project: libyuv
+URL: http://www.mozilla.com/en-US/firefox/central/
+Developers: Google Inc.
+License: BSD
+Reference: https://chromium.googlesource.com/libyuv/libyuv/+/master/LICENSE
+
+Project: OpenCV (Open Source Computer Vision Library)
+URL: http://opencv.org/
+License: BSD
+Reference: http://opencv.org/license.html
+
+Project: Protobuf library
+URL: https://developers.google.com/protocol-buffers/
+Developers: Google Inc.
+License: BSD
+Reference: https://github.com/google/protobuf/blob/master/LICENSE
+
+Project: Android Support Libraries
+Developers: The Android Open Source Project
+Reference: http://www.apache.org/licenses/LICENSE-2.0
+
+Project: Device Year Class
+URL: https://github.com/facebook/device-year-class
+Developers: Facebook 
+License: The Apache Software License, Version 2.0
+Reference: https://github.com/facebook/device-year-class/blob/master/LICENSE
+
+Project: Grafika test app
+URL: https://github.com/google/grafika
+Developers: Google Inc.
+License: The Apache Software License, Version 2.0
+Reference: https://github.com/google/grafika/blob/master/LICENSE
+
+Project: FPSCounter.java
+Developers: JogAmp Community
+License: BSD 2-Clause License
+

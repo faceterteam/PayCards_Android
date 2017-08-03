@@ -1,0 +1,271 @@
+input: "data"
+input_dim: 22
+input_dim: 1
+input_dim: 29
+input_dim: 20
+name: "3conv_1_3"
+
+layer {
+name: "conv1"
+type: "Convolution"
+bottom: "data"
+top: "conv1"
+    convolution_param {
+    num_output: 16
+    kernel_size: 3
+    stride: 1
+        weight_filler {
+        type: "xavier"
+        }
+        bias_filler {
+        type: "constant"
+        }
+    }
+}
+layer {
+name: "relu1"
+type: "ReLU"
+bottom: "conv1"
+top: "conv1"
+}
+
+layer {
+name: "conv2"
+type: "Convolution"
+bottom: "conv1"
+top: "conv2"
+    convolution_param {
+    num_output: 32
+    kernel_size: 3
+    stride: 1
+        weight_filler {
+        type: "xavier"
+        }
+        bias_filler {
+        type: "constant"
+        }
+    }
+}
+layer {
+name: "relu2"
+type: "ReLU"
+bottom: "conv2"
+top: "conv2"
+}
+
+
+layer {
+name: "inception3x3_1"
+type: "Convolution"
+bottom: "conv2"
+top: "inception3x3_1"
+    convolution_param {
+    num_output: 32
+    kernel_size: 3
+    pad: 1
+    stride: 1
+        weight_filler {
+        type: "xavier"
+        }
+        bias_filler {
+        type: "constant"
+        }
+    }
+}
+layer {
+name: "relu2_inception3x3_1"
+type: "ReLU"
+bottom: "inception3x3_1"
+top: "inception3x3_1"
+}
+layer {
+name: "inception5x5_1"
+type: "Convolution"
+bottom: "conv2"
+top: "inception5x5_1"
+    convolution_param {
+    num_output: 16
+    kernel_size: 5
+    pad:2
+    stride: 1
+        weight_filler {
+        type: "xavier"
+        }
+        bias_filler {
+        type: "constant"
+        }
+    }
+}
+layer {
+name: "relu_inception5x5_1"
+type: "ReLU"
+bottom: "inception5x5_1"
+top: "inception5x5_1"
+}
+
+layer {
+name: "inception1x1_1"
+type: "Convolution"
+bottom: "conv2"
+top: "inception1x1_1"
+    convolution_param {
+    num_output: 32
+    kernel_size: 1
+    stride: 1
+        weight_filler {
+        type: "xavier"
+        }
+        bias_filler {
+        type: "constant"
+        }
+    }
+}
+layer {
+name: "relu_inception1x1_1"
+type: "ReLU"
+bottom: "inception1x1_1"
+top: "inception1x1_1"
+}
+
+
+layer {
+name: "pool_inception_1"
+type: "Pooling"
+bottom: "conv2"
+top: "pool_inception_1"
+    pooling_param {
+    pool: MAX
+    kernel_size: 3
+    pad:1
+    stride: 1
+    }
+}
+
+
+layer {
+name: "inception1x1_pool_1"
+type: "Convolution"
+bottom: "pool_inception_1"
+top: "inception1x1_pool_1"
+    convolution_param {
+    num_output: 32
+    kernel_size: 1
+    stride: 1
+        weight_filler {
+        type: "xavier"
+        }
+        bias_filler {
+        type: "constant"
+        }
+    }
+}
+layer {
+name: "relu_inception1x1_pool_1"
+type: "ReLU"
+bottom: "inception1x1_pool_1"
+top: "inception1x1_pool_1"
+}
+
+layer {
+name: "inception_output_1"
+type: "Concat"
+bottom: "inception1x1_1"
+bottom: "inception3x3_1"
+bottom: "inception5x5_1"
+bottom: "inception1x1_pool_1"
+top: "inception_output_1"
+}
+
+layer {
+name: "pool2"
+type: "Pooling"
+bottom: "inception_output_1"
+top: "pool2"
+    pooling_param {
+    pool: AVE
+    kernel_h: 3
+    kernel_w: 2
+    stride: 2
+    }
+}
+
+layer {
+name: "conv3"
+type: "Convolution"
+bottom: "pool2"
+top: "conv3"
+    convolution_param {
+    num_output: 128
+    kernel_size: 3
+    stride: 1
+        weight_filler {
+        type: "xavier"
+        }
+        bias_filler {
+        type: "constant"
+        }
+    }
+}
+layer {
+name: "relu3"
+type: "ReLU"
+bottom: "conv3"
+top: "conv3"
+}
+
+layer {
+name: "pool3"
+type: "Pooling"
+bottom: "conv3"
+top: "pool3"
+    pooling_param {
+    pool: AVE
+    kernel_size: 2
+    stride: 2
+    }
+}
+
+layer {
+name: "ip1"
+type: "InnerProduct"
+bottom: "pool3"
+top: "ip1"
+    inner_product_param {
+    num_output: 256
+        weight_filler {
+        type: "xavier"
+        }
+        bias_filler {
+        type: "constant"
+        }
+    }
+}
+layer {
+name: "relu7"
+type: "ReLU"
+bottom: "ip1"
+top: "ip1"
+}
+
+layer {
+name: "ip2"
+type: "InnerProduct"
+bottom: "ip1"
+top: "ip2"
+    inner_product_param {
+    num_output: 27
+        weight_filler {
+        type: "xavier"
+        }
+        bias_filler {
+        type: "constant"
+        }
+    }
+}
+
+layer {
+	name: "loss"
+	type: "Softmax"
+	bottom: "ip2"
+	top: "loss"
+}

@@ -1,0 +1,5 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="wocr_tablet_card_land_top_bottom_margin">100dp</dimen>
+    <dimen name="wocr_tablet_card_port_right_left_margin">100dp</dimen>
+</resources>
