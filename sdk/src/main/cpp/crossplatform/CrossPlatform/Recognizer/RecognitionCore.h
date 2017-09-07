@@ -11,6 +11,8 @@
 
 
 #include <atomic>
+#include <condition_variable>
+#include <mutex>
 #include "IRecognitionCore.h"
 #include "IFrameStorage.h"
 #include "IRecognitionCoreDelegate.h"
@@ -105,8 +107,11 @@ private:
     weak_ptr<ITorchManager> _torchManager;
     
     atomic<bool> _isIdle;
-    atomic<bool> _isBusy;
-    
+
+    std::mutex _isBusyMutex;
+    std::condition_variable _isBusyVar;
+    bool _isBusy;
+
     cv::Mat _currentFrame;
     vector<ParametricLine> _edges;
     size_t _bufferSizeY;

@@ -192,6 +192,7 @@ public final class ScanManager {
                 refreshDisplayOrientation();
             }
         });
+        getCardDetectionStateView().setRecognitionResult(RecognitionResult.empty());
         setRecognitionCoreIdle(false);
     }
 

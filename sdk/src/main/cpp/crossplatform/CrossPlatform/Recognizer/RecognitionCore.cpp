@@ -7,6 +7,7 @@
 //
 
 #include <thread>
+#include <unistd.h>
 
 #include "RecognitionCore.h"
 #include "IServiceContainer.h"
@@ -36,8 +37,8 @@ bool IRecognitionCore::GetInstance(shared_ptr<IRecognitionCore> &recognitionCore
 CRecognitionCore::CRecognitionCore(const shared_ptr<IRecognitionCoreDelegate>& delegate, const shared_ptr<ITorchDelegate>& torchDelegate) : _delegate(delegate), _orientation(PayCardsRecognizerOrientationPortrait), _mode(PayCardsRecognizerModeNone), _deployed(false)
 {
     _isIdle.store(false);
-    _isBusy.store(false);
-    
+    _isBusy = false;
+
     IServiceContainerFactory::CreateServiceContainer(_serviceContainerPtr);
     
     _serviceContainerPtr->Initialize();
@@ -122,6 +123,9 @@ void CRecognitionCore::SetIdle(bool isIdle)
 {
     if (!isIdle) {
         if(auto recognitionResult = _recognitionResult.lock()) {
+            std::unique_lock<std::mutex> lock(_isBusyMutex);
+            while (_isBusy)
+                _isBusyVar.wait(lock);
             recognitionResult->Reset();
         }
     }
@@ -137,6 +141,9 @@ bool CRecognitionCore::IsIdle() const
 void CRecognitionCore::ResetResult()
 {
     if(auto recognitionResult = _recognitionResult.lock()) {
+        std::unique_lock<std::mutex> lock(_isBusyMutex);
+        while (_isBusy)
+            _isBusyVar.wait(lock);
         recognitionResult->Reset();
     }
 }
@@ -287,9 +294,9 @@ void CRecognitionCore::ProcessFrame(DetectedLineFlags& edgeFlags, void* bufferY,
                     edgeFlags = edgesDetector->DetectEdges(frameMatY, _edges, _currentFrame);
                     if (edgeFlags&DetectedLineTopFlag &&  edgeFlags&DetectedLineBottomFlag
                         && edgeFlags&DetectedLineLeftFlag && edgeFlags&DetectedLineRightFlag) {
-                        if (!_isBusy.load()) {
-                            _isBusy.store(true);
-                            
+                        std::unique_lock<std::mutex> lock(_isBusyMutex);
+                        if (!_isBusy) {
+                            _isBusy = true;
                             _bufferSizeY = bufferSizeY;
                             if (!(recognitionResult->GetRecognitionStatus() & RecognitionStatusNumber)) {
                                 frameStorage->SetRawY(frameMatY.data, bufferUV, _edges, _orientation);
@@ -317,7 +324,9 @@ void CRecognitionCore::FinishRecognition()
 {
     if(auto frameStorage = _frameStorage.lock()) {
         frameStorage->PopFrame();
-        _isBusy.store(false);
+        std::unique_lock<std::mutex> lock(_isBusyMutex);
+        _isBusy = false;
+        _isBusyVar.notify_one();
     }
 }
 
@@ -328,7 +337,9 @@ void CRecognitionCore::ProcessFrameThreaded()
             Recognize();
         }
         else {
-            _isBusy.store(false);
+            std::unique_lock<std::mutex> lock(_isBusyMutex);
+            _isBusy = false;
+            _isBusyVar.notify_one();
         }
     }
 }

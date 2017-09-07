@@ -8,6 +8,7 @@
 
 #include <time.h>
 #include <android/log.h>
+#include <unistd.h>
 #include "RecognitionCoreDelegate.h"
 #include "IRecognitionCore.h"
 #include "INeuralNetworkResult.h"
@@ -135,18 +136,19 @@ void CRecognitionCoreDelegate::RecognitionDidFinish(const shared_ptr<IRecognitio
         {
             cv::Mat image = result->GetCardImage();
 
-            jintArray jArgb = jenv->NewIntArray(image.total());
-            unsigned *argb = (unsigned *) jenv->GetIntArrayElements(jArgb, NULL);
+            if (!image.empty()) {
+                jintArray jArgb = jenv->NewIntArray(image.total());
+                unsigned *argb = (unsigned *) jenv->GetIntArrayElements(jArgb, NULL);
 
-            libyuv::YToARGB(image.data, image.cols, (uint8 *) argb, image.cols*4, image.cols, image.rows);
-            //cv::Mat tmp = cv::Mat (image.rows, image.cols, CV_8U, new cv:: Scalar(4));
-            //cvtColor(image, tmp, CV_GRAY2BGRA, 4);
-            //jenv->SetIntArrayRegion(jArgb, 0, image.total(), (const jint *) tmp.data);
+                libyuv::YToARGB(image.data, image.cols, (uint8 *) argb, image.cols * 4, image.cols,
+                                image.rows);
 
-            jenv->ReleaseIntArrayElements(jArgb, (jint *) argb, 0);
-            jCardImage = jenv->CallStaticObjectMethod(_clazzBitmap, _methodCreateBitmap,
-                                                           jArgb,
-                                                           image.cols, image.rows, _bitmapConfigRgb565Obj);
+                jenv->ReleaseIntArrayElements(jArgb, (jint *) argb, 0);
+                jCardImage = jenv->CallStaticObjectMethod(_clazzBitmap, _methodCreateBitmap,
+                                                          jArgb,
+                                                          image.cols, image.rows,
+                                                          _bitmapConfigRgb565Obj);
+            }
         }
 
         // Number Rect
