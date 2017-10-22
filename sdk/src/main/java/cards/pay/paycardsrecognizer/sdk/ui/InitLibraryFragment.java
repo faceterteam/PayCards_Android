@@ -56,9 +56,9 @@ public final class InitLibraryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.wocr_fragment_scan_card, container, false);
 
-        mMainContent = root.findViewById(R.id.wocr_main_content);
+        mMainContent = (ViewGroup) root.findViewById(R.id.wocr_main_content);
         mProgressBar = root.findViewById(R.id.wocr_progress_bar);
-        mCameraPreviewLayout = root.findViewById(R.id.wocr_card_recognition_view);
+        mCameraPreviewLayout = (CameraPreviewLayout) root.findViewById(R.id.wocr_card_recognition_view);
         mFlashButton = root.findViewById(R.id.wocr_iv_flash_id);
 
         View enterManuallyButton = root.findViewById(R.id.wocr_tv_enter_card_number_id);
