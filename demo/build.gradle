@@ -4,12 +4,11 @@ uploadArchives.enabled = false
 
 ext.private = new Properties()
 if (rootProject.file('private.properties').exists()) {
-    ext.private.load(new FileInputStream(rootProject.file('private.properties')));
+    ext.private.load(new FileInputStream(rootProject.file('private.properties')))
 }
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "cards.pay.sample.demo"
@@ -43,17 +42,15 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(path: ":sdk")
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(path: ":sdk")
     //debugCompile project(path: ":sdk", configuration: 'release')
     //releaseCompile project(path: ":sdk", configuration: 'release')
-    androidTestCompile("com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion", {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibVersion"
-    compile "com.android.support:gridlayout-v7:$rootProject.ext.supportLibVersion"
-    compile "com.android.support:design:$rootProject.ext.supportLibVersion"
-    testCompile "junit:junit:$rootProject.ext.junitVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
+    implementation "com.android.support:appcompat-v7:$rootProject.ext.supportLibVersion"
+    implementation "com.android.support:gridlayout-v7:$rootProject.ext.supportLibVersion"
+    implementation "com.android.support:design:$rootProject.ext.supportLibVersion"
+    testImplementation "junit:junit:$rootProject.ext.junitVersion"
 }
 
 if (ext.private.getProperty("release.StoreFile") != null) {

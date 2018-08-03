@@ -1,13 +1,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    
+
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        //classpath 'com.android.tools.build:gradle:3.3.0-alpha04'
+        classpath 'com.android.tools.build:gradle:3.1.4'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -28,17 +29,16 @@ task clean(type: Delete) {
 ext {
     // Sdk and tools
     minSdkVersion = 15
-    targetSdkVersion = 25
-    compileSdkVersion = 26
-    buildToolsVersion = '26.0.1'
+    targetSdkVersion = 28
+    compileSdkVersion = 28
 
     // App dependencies
-    supportLibVersion = '26.0.0'
-    yearclassVersion = "1.0.1"
+    supportLibVersion = '27.1.1'
+    yearclassVersion = "2.1.0"
 
     // App test dependencies
     junitVersion = '4.12'
-    espressoVersion = '2.2.2'
-    robolectricVersion = "3.3.2"
-    mockitoVersion = "2.8.9"
+    espressoVersion = '3.0.2'
+    robolectricVersion = "3.8"
+    mockitoVersion = "2.21.0"
 }
