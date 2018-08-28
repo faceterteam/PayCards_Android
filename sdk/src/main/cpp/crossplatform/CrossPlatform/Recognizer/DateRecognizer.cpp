@@ -239,18 +239,32 @@ shared_ptr<INeuralNetworkResultList> CDateRecognizer::Process(cv::Mat& frame, ve
     shared_ptr<INeuralNetworkResultList> finalResult = nullptr;
     
     Mat dateMat = frame(dateWindowRect);
-    
+
     std::vector<cv::Rect> dateRects;
-    _dateCascade.detectMultiScale(dateMat, dateRects, 1.01, 1, 0|CV_HAAR_SCALE_IMAGE, cv::Size(96, 26), cv::Size(100, 30));
-    
+    std::vector<int> rejectLevels;
+    std::vector<double> levelWeights;
+    _dateCascade.detectMultiScale(dateMat, dateRects, rejectLevels, levelWeights, 1.01, 1,
+            0|CV_HAAR_SCALE_IMAGE, cv::Size(96, 26), cv::Size(100, 30), true);
+
     // find rough location of the rects using Viola-Jones cascade
     if (dateRects.size() == 0) return nullptr;
     
     // we are going to process only first rectsLimit rect
     const int rectsLimit = 1;
-    
+
     if (dateRects.size() > rectsLimit) {
-        dateRects.erase(dateRects.begin()+rectsLimit, dateRects.end());
+        std::vector<cv::Rect> newDateRects(rectsLimit);
+        partial_sort_copy(dateRects.begin(), dateRects.end(), newDateRects.begin(), newDateRects.end(),
+                [&levelWeights,&dateRects](const cv::Rect &r1, const cv::Rect &r2) {
+            auto pos1 = find(dateRects.begin(), dateRects.end(), r1) - dateRects.begin();
+            auto pos2 = find(dateRects.begin(), dateRects.end(), r2) - dateRects.begin();
+            if (levelWeights[pos1] != levelWeights[pos2]) return levelWeights[pos1] > levelWeights[pos2];
+            if (r1.x != r2.x) return r1.x < r2.x;
+            if (r1.y != r2.y) return r1.y < r2.y;
+            if (r1.width != r2.width) return r1.width < r2.width;
+            return r1.height < r2.height;
+        });
+        dateRects = std::move(newDateRects);
     }
     
     // create vector of rects centers, we use it to refine location by regression NN
