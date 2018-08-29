@@ -291,7 +291,8 @@ void CRecognitionCore::ProcessFrame(DetectedLineFlags& edgeFlags, void* bufferY,
         if(auto edgesDetector = _edgesDetector.lock()) {
             if(auto recognitionResult = _recognitionResult.lock()) {
                 if(auto frameStorage = _frameStorage.lock()) {
-                    edgeFlags = edgesDetector->DetectEdges(frameMatY, _edges, _currentFrame);
+                    Mat bordersFrame;
+                    edgeFlags = edgesDetector->DetectEdges(frameMatY, _edges, bordersFrame);
                     if (edgeFlags&DetectedLineTopFlag &&  edgeFlags&DetectedLineBottomFlag
                         && edgeFlags&DetectedLineLeftFlag && edgeFlags&DetectedLineRightFlag) {
                         std::unique_lock<std::mutex> lock(_isBusyMutex);
@@ -301,6 +302,7 @@ void CRecognitionCore::ProcessFrame(DetectedLineFlags& edgeFlags, void* bufferY,
                             if (!(recognitionResult->GetRecognitionStatus() & RecognitionStatusNumber)) {
                                 frameStorage->SetRawY(frameMatY.data, bufferUV, _edges, _orientation);
                             }
+                            bordersFrame.copyTo(_currentFrame);
                             
                             std::thread thread;
                             thread = std::thread( [this] { this->ProcessFrameThreaded(); } );
