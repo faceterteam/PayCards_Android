@@ -51,15 +51,14 @@ target_include_directories(crossplatform
         CrossPlatform/Torch
         jniImpl)
 
-if (${ANDROID_ABI} STREQUAL "armeabi-v7a")
+if (ANDROID_ABI STREQUAL "armeabi-v7a")
     set_property(TARGET crossplatform APPEND_STRING PROPERTY COMPILE_FLAGS " -mfpu=neon")
-elseif(${ANDROID_ABI} STREQUAL "x86")
-    set_property(TARGET crossplatform
-            APPEND_STRING PROPERTY COMPILE_FLAGS
-            " -mssse3  -Wno-unknown-attributes \
-                       -Wno-deprecated-declarations \
-                       -Wno-constant-conversion \
-                       -Wno-static-in-inline")
+elseif(ANDROID_ABI MATCHES "x86(_64)?")
+    target_compile_options(crossplatform PRIVATE
+            $<$<STREQUAL:${ANDROID_ABI},x86>:-msse3>
+            -Wno-deprecated-declarations)
+    target_compile_definitions(crossplatform PRIVATE HAVE_NEON_X86=1)
+    target_link_libraries(crossplatform PRIVATE NEON_2_SSE)
 endif()
 
 target_link_libraries(crossplatform

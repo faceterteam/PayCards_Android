@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.4.1)
 
 set(OpenCV_DIR "${CMAKE_CURRENT_SOURCE_DIR}/opencv2/sdk/native/jni")
 
+add_subdirectory(armneon2x86sse)
 add_subdirectory(eigen)
 add_subdirectory(protobuf)
 add_subdirectory(caffe)

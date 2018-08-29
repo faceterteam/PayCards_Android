@@ -49,3 +49,8 @@ Project: FPSCounter.java
 Developers: JogAmp Community
 License: BSD 2-Clause License
 
+Project: ARM_NEON_2_x86_SSE
+URL: https://github.com/intel/ARM_NEON_2_x86_SSE
+Developers: Intel Corporation
+License: BSD
+Reference: https://github.com/intel/ARM_NEON_2_x86_SSE/blob/master/LICENSE

@@ -46,13 +46,6 @@ target_compile_options(caffe PRIVATE
 
 if (${ANDROID_ABI} STREQUAL "armeabi-v7a")
     set_property(TARGET caffe APPEND_STRING PROPERTY COMPILE_FLAGS " -mfpu=neon")
-elseif(${ANDROID_ABI} STREQUAL "x86")
-    set_property(TARGET caffe
-            APPEND_STRING PROPERTY COMPILE_FLAGS
-            " -mssse3  -Wno-unknown-attributes \
-                       -Wno-deprecated-declarations \
-                       -Wno-constant-conversion \
-                       -Wno-static-in-inline")
 endif()
 
 target_link_libraries(caffe

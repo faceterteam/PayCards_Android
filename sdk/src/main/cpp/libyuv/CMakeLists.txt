@@ -47,12 +47,4 @@ if (ANDROID_ABI STREQUAL "armeabi-v7a")
     set_property(SOURCE ${neon_SRCS} APPEND_STRING PROPERTY COMPILE_FLAGS " -mfpu=neon")
     target_sources(libyuv PRIVATE ${neon_SRCS})
     target_compile_definitions(libyuv PRIVATE LIBYUV_NEON)
-elseif (ANDROID_ABI STREQUAL "x86")
-    set_property(SOURCE ${neon_SRCS} APPEND_STRING PROPERTY COMPILE_FLAGS
-            " -mssse3  -Wno-unknown-attributes \
-                   -Wno-deprecated-declarations \
-                   -Wno-constant-conversion \
-                   -Wno-static-in-inline")
-    target_sources(libyuv PRIVATE ${neon_SRCS})
-    target_compile_definitions(libyuv PRIVATE LIBYUV_NEON)
 endif ()

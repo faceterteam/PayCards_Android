@@ -1,4 +1,8 @@
-#include <arm_neon.h>
+#ifdef HAVE_NEON_X86
+ #include <NEON_2_SSE.h>
+#else
+ #include <arm_neon.h>
+#endif
 
 #include "canny.h"
 
@@ -338,7 +342,7 @@ double sum_abs_magnitude_neon(Mat image) {
 
   uint16_t vector_cols = vector_chunks * kVectorSize;
 
-  int32x4_t vector_sum = {0, 0, 0, 0};
+  int32x4_t vector_sum = vdupq_n_s32(0);
   int32_t scalar_sum = 0;
 
   for(uint16_t row_index = 0; row_index < image_size.height; row_index++) {
@@ -397,8 +401,8 @@ double sum_magnitude_neon(Mat dx, Mat dy) {
   uint16_t vector_chunks = (uint16_t)(image_size.width / kVectorSize);
 
   uint16_t vector_cols = vector_chunks * kVectorSize;
-  float32x4_t vector_sum = {0.0f, 0.0f, 0.0f, 0.0f};
-  int32x4_t ones = {1, 1, 1, 1};
+  float32x4_t vector_sum = vdupq_n_f32(0.0f);
+  int32x4_t ones = vdupq_n_u32(1);
   float32_t scalar_sum = 0.0f;
   
   for(uint16_t row_index = 0; row_index < image_size.height; row_index++) {
