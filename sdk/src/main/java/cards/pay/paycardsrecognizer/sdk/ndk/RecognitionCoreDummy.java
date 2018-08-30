@@ -1,6 +1,7 @@
 package cards.pay.paycardsrecognizer.sdk.ndk;
 
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Display;
 
@@ -28,19 +29,7 @@ class RecognitionCoreDummy implements RecognitionCoreImpl {
     }
 
     @Override
-    public void setCameraSensorOrientation(int rotation) {
-    }
-
-    @Override
-    public void setDisplayParameters(Display display) {
-    }
-
-    @Override
-    public void setDisplayParameters(int rotation, boolean naturalRotationIsLandscape) {
-    }
-
-    @Override
-    public void calcWorkingArea(int width, int height, int captureAreaWidth) {
+    public void setDisplayConfiguration(@NonNull DisplayConfiguration configuration) {
     }
 
     @Override

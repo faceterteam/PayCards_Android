@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Keep;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
@@ -43,7 +44,7 @@ final class RecognitionCoreNdk implements RecognitionCoreImpl {
 
     private final Rect mCardFrameRect = new Rect(30, 432, 30+660, 432 + 416);
 
-    private final DisplayConfiguration mDisplayConfiguration = new DisplayConfiguration();
+    private DisplayConfiguration mDisplayConfiguration = new DisplayConfigurationImpl();
 
     @Nullable
     private RecognitionStatusListener mStatusListener;
@@ -153,23 +154,10 @@ final class RecognitionCoreNdk implements RecognitionCoreImpl {
         nativeSetRecognitionMode(mode);
     }
 
-    public synchronized void setCameraSensorOrientation(int rotation) {
-        mDisplayConfiguration.setCameraParameters(rotation);
-    }
-
-    // XXX must be called after setCameraSensorOrientation()
-    public synchronized void setDisplayParameters(Display display) {
-        mDisplayConfiguration.setDisplayParameters(display);
+    public synchronized void setDisplayConfiguration(@NonNull DisplayConfiguration configuration) {
+        this.mDisplayConfiguration = configuration;
         nativeSetOrientation(mDisplayConfiguration.getNativeDisplayRotation());
-    }
-
-    public synchronized void setDisplayParameters(int rotation, boolean naturalOrientationIsLandscape) {
-        mDisplayConfiguration.setDisplayParameters(rotation, naturalOrientationIsLandscape);
-        nativeSetOrientation(mDisplayConfiguration.getNativeDisplayRotation());
-    }
-
-    public void calcWorkingArea(int width, int height, int captureAreaWidth) {
-        nativeCalcWorkingArea(width, height, captureAreaWidth, mCardFrameRect);
+        nativeCalcWorkingArea(1280, 720, 32, mCardFrameRect);
     }
 
     public Rect getCardFrameRect() {

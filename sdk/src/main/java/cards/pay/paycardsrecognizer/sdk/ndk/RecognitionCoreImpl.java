@@ -1,6 +1,7 @@
 package cards.pay.paycardsrecognizer.sdk.ndk;
 
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.view.Display;
@@ -16,14 +17,7 @@ public interface RecognitionCoreImpl {
 
     void setRecognitionMode(@RecognitionConstants.RecognitionMode int mode);
 
-    void setCameraSensorOrientation(int rotation);
-
-    // XXX must be called after setCameraSensorOrientation()
-    void setDisplayParameters(Display display);
-
-    void setDisplayParameters(int rotation, boolean naturalRotationIsLandscape);
-
-    void calcWorkingArea(int width, int height, int captureAreaWidth);
+    void setDisplayConfiguration(@NonNull DisplayConfiguration configuration);
 
     Rect getCardFrameRect();
 

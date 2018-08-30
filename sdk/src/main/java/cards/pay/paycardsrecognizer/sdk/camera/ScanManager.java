@@ -23,6 +23,7 @@ import java.util.Locale;
 import cards.pay.paycardsrecognizer.sdk.camera.widget.CameraPreviewLayout;
 import cards.pay.paycardsrecognizer.sdk.camera.widget.CardDetectionStateView;
 import cards.pay.paycardsrecognizer.sdk.camera.widget.OnWindowFocusChangedListener;
+import cards.pay.paycardsrecognizer.sdk.ndk.DisplayConfigurationImpl;
 import cards.pay.paycardsrecognizer.sdk.ndk.RecognitionConstants;
 import cards.pay.paycardsrecognizer.sdk.ndk.RecognitionCore;
 import cards.pay.paycardsrecognizer.sdk.ndk.RecognitionResult;
@@ -65,6 +66,8 @@ public final class ScanManager {
 
     private final WindowRotationListener mWindowRotationListener;
 
+    private final DisplayConfigurationImpl mDisplayConfiguration;
+
     public interface Callbacks {
         void onCameraOpened(Camera.Parameters cameraParameters);
         void onOpenCameraError(Exception exception);
@@ -89,9 +92,10 @@ public final class ScanManager {
         mHandler = new ScanManagerHandler(this);
 
         Display display = getDisplay();
-        mRecognitionCore.setCameraSensorOrientation(CameraUtils.getBackCameraSensorOrientation());
-        mRecognitionCore.setDisplayParameters(display);
-        mRecognitionCore.calcWorkingArea(1280, 720, 32);
+        mDisplayConfiguration = new DisplayConfigurationImpl();
+        mDisplayConfiguration.setCameraParameters(CameraUtils.getBackCameraSensorOrientation());
+        mDisplayConfiguration.setDisplayParameters(display);
+        mRecognitionCore.setDisplayConfiguration(mDisplayConfiguration);
 
         SurfaceHolder sh = getSurfaceView().getHolder();
         sh.addCallback(new SurfaceHolder.Callback() {
@@ -165,7 +169,7 @@ public final class ScanManager {
             if (DBG) Log.d(TAG, "No previous surface");
         }
 
-        mRecognitionCore.setCameraSensorOrientation(CameraUtils.getBackCameraSensorOrientation());
+        mDisplayConfiguration.setCameraParameters(CameraUtils.getBackCameraSensorOrientation());
         mRecognitionCore.setRecognitionMode(mRecognitionMode);
         mRecognitionCore.setStatusListener(mRecognitionStatusListener);
         mRecognitionCore.resetResult();
@@ -253,7 +257,8 @@ public final class ScanManager {
     private void refreshDisplayOrientation() {
         if (DBG) Log.d(TAG, "refreshDisplayOrientation()");
         final Display display = getDisplay();
-        mRecognitionCore.setDisplayParameters(display);
+        mDisplayConfiguration.setDisplayParameters(display);
+        mRecognitionCore.setDisplayConfiguration(mDisplayConfiguration);
         if (mRenderThread != null) {
             int rotation = CameraUtils.getBackCameraDataRotation(display);
             mRenderThread.getHandler().sendOrientationChanged(rotation);
