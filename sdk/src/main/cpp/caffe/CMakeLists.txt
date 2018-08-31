@@ -39,7 +39,6 @@ target_include_directories(caffe
 
 target_compile_definitions(caffe PUBLIC CPU_ONLY USE_EIGEN)
 target_compile_options(caffe PRIVATE
-        -fdata-sections
         -marm -Wno-unused-command-line-argument
         -frtti -fexceptions
         -O3)

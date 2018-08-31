@@ -31,7 +31,6 @@ set_target_properties(crossplatform PROPERTIES
         CXX_EXTENSIONS OFF
         CXX_STANDARD 11)
 target_compile_options(crossplatform PRIVATE
-        -fdata-sections
         -marm -Wno-unused-command-line-argument
         -frtti -fexceptions
         -O3)

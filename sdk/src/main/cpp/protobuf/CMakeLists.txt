@@ -35,7 +35,6 @@ set_target_properties(protobuf PROPERTIES
         CXX_EXTENSIONS OFF
         CXX_STANDARD 11)
 target_compile_options(protobuf PRIVATE
-        -fdata-sections
         -frtti -fno-exceptions
         -Wno-enum-compare-switch
         -Wno-error=return-type

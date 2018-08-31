@@ -45,7 +45,7 @@ set(neon_SRCS source/compare_neon.cc
         source/scale_neon.cc)
 
 target_include_directories(libyuv PUBLIC include)
-target_compile_options(libyuv PRIVATE -fdata-sections -fno-exceptions -fno-rtti -Wall -O3)
+target_compile_options(libyuv PRIVATE -fno-exceptions -fno-rtti -Wall -O3)
 set_target_properties(libyuv PROPERTIES
     CXX_VISIBILITY_PRESET hidden
     VISIBILITY_INLINES_HIDDEN 1)
