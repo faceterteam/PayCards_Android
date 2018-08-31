@@ -140,7 +140,7 @@ void CRecognitionCoreDelegate::RecognitionDidFinish(const shared_ptr<IRecognitio
                 jintArray jArgb = jenv->NewIntArray(image.total());
                 unsigned *argb = (unsigned *) jenv->GetIntArrayElements(jArgb, NULL);
 
-                libyuv::YToARGB(image.data, image.cols, (uint8 *) argb, image.cols * 4, image.cols,
+                libyuv::YToARGB(image.data, image.cols, (uint8_t *) argb, image.cols * 4, image.cols,
                                 image.rows);
 
                 jenv->ReleaseIntArrayElements(jArgb, (jint *) argb, 0);
@@ -185,7 +185,7 @@ jobject CRecognitionCoreDelegate::CreateJBitmap(JNIEnv *jenv, cv::Mat rgbImage, 
     jintArray jArgb = jenv->NewIntArray(size);
 
     unsigned *argb = (unsigned *) jenv->GetIntArrayElements(jArgb, NULL);
-    libyuv::RAWToARGB(rgbImage.data, rgbImage.cols * 3, (uint8 *) argb, rgbImage.cols * 4, rgbImage.cols, rgbImage.rows);
+    libyuv::RAWToARGB(rgbImage.data, rgbImage.cols * 3,(uint8_t *)argb, rgbImage.cols * 4, rgbImage.cols, rgbImage.rows);
     jenv->ReleaseIntArrayElements(jArgb, (jint *) argb, 0);
     /*
     cv::Mat tmp = cv::Mat (rgbImage.rows, rgbImage.cols, CV_8U, new cv:: Scalar(4));
