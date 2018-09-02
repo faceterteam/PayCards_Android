@@ -42,6 +42,9 @@ target_compile_options(caffe PRIVATE
         -marm -Wno-unused-command-line-argument
         -frtti -fexceptions
         -O3)
+set_target_properties(caffe PROPERTIES
+        CXX_VISIBILITY_PRESET hidden
+        VISIBILITY_INLINES_HIDDEN 1)
 
 if (${ANDROID_ABI} STREQUAL "armeabi-v7a")
     set_property(TARGET caffe APPEND_STRING PROPERTY COMPILE_FLAGS " -mfpu=neon")

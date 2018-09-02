@@ -29,7 +29,9 @@ find_package(OpenCV REQUIRED
 
 set_target_properties(crossplatform PROPERTIES
         CXX_EXTENSIONS OFF
-        CXX_STANDARD 11)
+        CXX_STANDARD 11
+        CXX_VISIBILITY_PRESET hidden
+        VISIBILITY_INLINES_HIDDEN 1)
 target_compile_options(crossplatform PRIVATE
         -marm -Wno-unused-command-line-argument
         -frtti -fexceptions
@@ -55,6 +57,7 @@ if (ANDROID_ABI STREQUAL "armeabi-v7a")
 elseif(ANDROID_ABI MATCHES "x86(_64)?")
     target_compile_options(crossplatform PRIVATE
             $<$<STREQUAL:${ANDROID_ABI},x86>:-msse3>
+            -Wno-unknown-attributes
             -Wno-deprecated-declarations)
     target_compile_definitions(crossplatform PRIVATE HAVE_NEON_X86=1)
     target_link_libraries(crossplatform PRIVATE NEON_2_SSE)

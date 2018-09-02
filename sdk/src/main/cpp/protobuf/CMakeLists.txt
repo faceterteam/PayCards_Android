@@ -33,7 +33,9 @@ add_library(protobuf STATIC
 
 set_target_properties(protobuf PROPERTIES
         CXX_EXTENSIONS OFF
-        CXX_STANDARD 11)
+        CXX_STANDARD 11
+        CXX_VISIBILITY_PRESET hidden
+        VISIBILITY_INLINES_HIDDEN 1)
 target_compile_options(protobuf PRIVATE
         -frtti -fno-exceptions
         -Wno-enum-compare-switch
