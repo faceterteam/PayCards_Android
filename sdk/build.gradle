@@ -4,6 +4,8 @@ apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+    testBuildType "profiling"
+
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
@@ -14,7 +16,7 @@ android {
 
         externalNativeBuild {
             ndkBuild {
-                abiFilters 'armeabi-v7a'
+                abiFilters 'armeabi-v7a', "arm64-v8a"
                 arguments "--jobs=${Runtime.runtime.availableProcessors().toString()}"
             }
         }
@@ -33,6 +35,15 @@ android {
         }
         debug {
             jniDebuggable true
+            debuggable true
+        }
+        profiling {
+            initWith debug
+             externalNativeBuild {
+                 ndkBuild {
+                    arguments "NDK_DEBUG=0"
+                }
+            }
         }
     }
 

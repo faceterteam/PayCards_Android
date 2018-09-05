@@ -16,7 +16,7 @@ import static cards.pay.paycardsrecognizer.sdk.ndk.RecognitionConstants.WORK_ARE
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public class DisplayConfiguration {
 
-    private static final String TAG = "DisplayConfiguration";
+    private static final String TAG = "DisplayConfigImpl";
 
     private static final boolean DBG = BuildConfig.DEBUG;
 

@@ -36,6 +36,10 @@ class RecognitionCoreDummy implements RecognitionCoreImpl {
     }
 
     @Override
+    public void setDisplayParameters(int rotation, boolean naturalRotationIsLandscape) {
+    }
+
+    @Override
     public void calcWorkingArea(int width, int height, int captureAreaWidth) {
     }
 

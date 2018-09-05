@@ -41,6 +41,7 @@ LOCAL_MODULE := protobuf_static
 LOCAL_SRC_FILES  := $(local_src_files)
 LOCAL_CFLAGS := -frtti -Wno-sign-compare -Wno-unused-parameter -Wno-sign-promo -Wno-error=return-type
 LOCAL_CPPFLAGS   += -std=c++11
+LOCAL_CPPFLAGS += -Wno-enum-compare-switch -Wno-tautological-undefined-compare -Wno-tautological-constant-compare -Wno-null-conversion
 LOCAL_CPP_EXTENSION := .cc
 LOCAL_C_INCLUDES := $(LOCAL_PATH) $(addprefix $(LOCAL_PATH)/, $(local_c_includes))
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH) $(LOCAL_PATH)/GoogleProtobuf

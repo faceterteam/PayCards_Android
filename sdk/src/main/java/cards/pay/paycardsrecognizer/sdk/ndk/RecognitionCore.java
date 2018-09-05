@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 import android.view.Display;
 
@@ -74,6 +75,11 @@ public final class RecognitionCore {
     // XXX must be called after setCameraSensorOrientation()
     public void setDisplayParameters(Display display) {
         sImpl.setDisplayParameters(display);
+    }
+
+    @VisibleForTesting
+    void setDisplayParameters(int rotation, boolean naturalOrientationIsLandscape) {
+        sImpl.setDisplayParameters(rotation, naturalOrientationIsLandscape);
     }
 
     public void calcWorkingArea(int width, int height, int captureAreaWidth) {

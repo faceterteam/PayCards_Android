@@ -33,7 +33,7 @@ final class RecognitionCoreNdk implements RecognitionCoreImpl {
     }
 
     static {
-        System.loadLibrary("opencv_java3");
+        System.loadLibrary("c++_shared");
         System.loadLibrary("cardrecognizer");
     }
 
@@ -160,6 +160,11 @@ final class RecognitionCoreNdk implements RecognitionCoreImpl {
     // XXX must be called after setCameraSensorOrientation()
     public synchronized void setDisplayParameters(Display display) {
         mDisplayConfiguration.setDisplayParameters(display);
+        nativeSetOrientation(mDisplayConfiguration.getNativeDisplayRotation());
+    }
+
+    public synchronized void setDisplayParameters(int rotation, boolean naturalOrientationIsLandscape) {
+        mDisplayConfiguration.setDisplayParameters(rotation, naturalOrientationIsLandscape);
         nativeSetOrientation(mDisplayConfiguration.getNativeDisplayRotation());
     }
 

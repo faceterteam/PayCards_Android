@@ -11,6 +11,7 @@ public final class RecognitionConstants {
     public static final int DETECTED_BORDER_TOP =   1;
     public static final int DETECTED_BORDER_BOTTOM = 1 << 1;
     public static final int DETECTED_BORDER_LEFT =   1 << 2;
+    public static final int DETECTED_BORDER_RIGHT =  1 << 3;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef(flag = true,
@@ -18,7 +19,6 @@ public final class RecognitionConstants {
     public @interface DetectedBorderFlags {}
 
 
-    public static final int DETECTED_BORDER_RIGHT =  1 << 3;
     public static final int RECOGNIZER_MODE_NUMBER = 1;
     public static final int RECOGNIZER_MODE_DATE = 1 << 1;
     public static final int RECOGNIZER_MODE_NAME = 1 << 2;

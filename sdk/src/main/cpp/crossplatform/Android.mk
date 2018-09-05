@@ -44,7 +44,6 @@ local_c_includes := \
 LOCAL_MODULE := crossplatform
 LOCAL_SRC_FILES  := $(local_src_files)
 LOCAL_CPPFLAGS   += -std=c++11
-LOCAL_CPPFLAGS   += -DCOLLECT_SAMPLES=1
 #APP_CPPFLAGS += -O3
 LOCAL_CPP_FEATURES := rtti exceptions
 LOCAL_ARM_MODE := arm

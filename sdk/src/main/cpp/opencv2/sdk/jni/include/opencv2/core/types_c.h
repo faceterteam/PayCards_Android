@@ -41,12 +41,12 @@
 //
 //M*/
 
-#ifndef __OPENCV_CORE_TYPES_H__
-#define __OPENCV_CORE_TYPES_H__
+#ifndef OPENCV_CORE_TYPES_H
+#define OPENCV_CORE_TYPES_H
 
 #ifdef HAVE_IPL
 #  ifndef __IPL_H__
-#    if defined WIN32 || defined _WIN32
+#    if defined _WIN32
 #      include <ipl.h>
 #    else
 #      include <ipl/ipl.h>
@@ -65,7 +65,7 @@
 #include <float.h>
 #endif // SKIP_INCLUDES
 
-#if defined WIN32 || defined _WIN32
+#if defined _WIN32
 #  define CV_CDECL __cdecl
 #  define CV_STDCALL __stdcall
 #else
@@ -130,24 +130,24 @@ enum {
  CV_BadImageSize=              -10,  /**< image size is invalid           */
  CV_BadOffset=                 -11,  /**< offset is invalid               */
  CV_BadDataPtr=                -12,  /**/
- CV_BadStep=                   -13,  /**/
+ CV_BadStep=                   -13,  /**< image step is wrong, this may happen for a non-continuous matrix */
  CV_BadModelOrChSeq=           -14,  /**/
- CV_BadNumChannels=            -15,  /**/
+ CV_BadNumChannels=            -15,  /**< bad number of channels, for example, some functions accept only single channel matrices */
  CV_BadNumChannel1U=           -16,  /**/
- CV_BadDepth=                  -17,  /**/
+ CV_BadDepth=                  -17,  /**< input image depth is not supported by the function */
  CV_BadAlphaChannel=           -18,  /**/
- CV_BadOrder=                  -19,  /**/
- CV_BadOrigin=                 -20,  /**/
- CV_BadAlign=                  -21,  /**/
+ CV_BadOrder=                  -19,  /**< number of dimensions is out of range */
+ CV_BadOrigin=                 -20,  /**< incorrect input origin               */
+ CV_BadAlign=                  -21,  /**< incorrect input align                */
  CV_BadCallBack=               -22,  /**/
  CV_BadTileSize=               -23,  /**/
- CV_BadCOI=                    -24,  /**/
- CV_BadROISize=                -25,  /**/
+ CV_BadCOI=                    -24,  /**< input COI is not supported           */
+ CV_BadROISize=                -25,  /**< incorrect input roi                  */
  CV_MaskIsTiled=               -26,  /**/
  CV_StsNullPtr=                -27,  /**< null pointer */
  CV_StsVecLengthErr=           -28,  /**< incorrect vector length */
- CV_StsFilterStructContentErr= -29,  /**< incorr. filter structure content */
- CV_StsKernelStructContentErr= -30,  /**< incorr. transform kernel content */
+ CV_StsFilterStructContentErr= -29,  /**< incorrect filter structure content */
+ CV_StsKernelStructContentErr= -30,  /**< incorrect transform kernel content */
  CV_StsFilterOffsetErr=        -31,  /**< incorrect filter offset value */
  CV_StsBadSize=                -201, /**< the input/output structure size is incorrect  */
  CV_StsDivByZero=              -202, /**< division by zero */
@@ -163,14 +163,14 @@ enum {
  CV_StsParseError=             -212, /**< invalid syntax/structure of the parsed file */
  CV_StsNotImplemented=         -213, /**< the requested function/feature is not implemented */
  CV_StsBadMemBlock=            -214, /**< an allocated block has been corrupted */
- CV_StsAssert=                 -215, /**< assertion failed */
- CV_GpuNotSupported=           -216,
- CV_GpuApiCallError=           -217,
- CV_OpenGlNotSupported=        -218,
- CV_OpenGlApiCallError=        -219,
- CV_OpenCLApiCallError=        -220,
+ CV_StsAssert=                 -215, /**< assertion failed   */
+ CV_GpuNotSupported=           -216, /**< no CUDA support    */
+ CV_GpuApiCallError=           -217, /**< GPU API call error */
+ CV_OpenGlNotSupported=        -218, /**< no OpenGL support  */
+ CV_OpenGlApiCallError=        -219, /**< OpenGL API call error */
+ CV_OpenCLApiCallError=        -220, /**< OpenCL API call error */
  CV_OpenCLDoubleNotSupported=  -221,
- CV_OpenCLInitError=           -222,
+ CV_OpenCLInitError=           -222, /**< OpenCL initialization error */
  CV_OpenCLNoAMDBlasFft=        -223
 };
 
@@ -409,6 +409,11 @@ IplConvKernelFP;
 #define CV_MAT_MAGIC_VAL    0x42420000
 #define CV_TYPE_NAME_MAT    "opencv-matrix"
 
+#ifdef __cplusplus
+typedef struct CvMat CvMat;
+CV_INLINE CvMat cvMat(const cv::Mat& m);
+#endif
+
 /** Matrix elements are stored row by row. Element (i, j) (i - 0-based row index, j - 0-based column
 index) of a matrix can be retrieved or modified using CV_MAT_ELEM macro:
 
@@ -531,6 +536,16 @@ inline CvMat::CvMat(const cv::Mat& m)
     step = (int)m.step[0];
     type = (type & ~cv::Mat::CONTINUOUS_FLAG) | (m.flags & cv::Mat::CONTINUOUS_FLAG);
 }
+
+inline CvMat cvMat(const cv::Mat& m)
+{
+    CvMat self;
+    CV_DbgAssert(m.dims <= 2);
+    self = cvMat(m.rows, m.dims == 1 ? 1 : m.cols, m.type(), m.data);
+    self.step = (int)m.step[0];
+    self.type = (self.type & ~cv::Mat::CONTINUOUS_FLAG) | (m.flags & cv::Mat::CONTINUOUS_FLAG);
+    return self;
+}
 #endif
 
 
@@ -614,7 +629,6 @@ CV_INLINE int cvIplDepth( int type )
 #define CV_TYPE_NAME_MATND    "opencv-nd-matrix"
 
 #define CV_MAX_DIM            32
-#define CV_MAX_DIM_HEAP       1024
 
 /**
   @deprecated consider using cv::Mat instead
@@ -915,6 +929,15 @@ CV_INLINE  CvPoint2D32f  cvPoint2D32f( double x, double y )
 
     return p;
 }
+
+#ifdef __cplusplus
+template<typename _Tp>
+CvPoint2D32f cvPoint2D32f(const cv::Point_<_Tp>& pt)
+{
+    CvPoint2D32f p((float)pt.x, (float)pt.y);
+    return p;
+}
+#endif
 
 /** converts CvPoint to CvPoint2D32f. */
 CV_INLINE  CvPoint2D32f  cvPointTo32f( CvPoint point )
@@ -1361,7 +1384,7 @@ CvGraph;
 
 /** @} */
 
-/*********************************** Chain/Countour *************************************/
+/*********************************** Chain/Contour *************************************/
 
 typedef struct CvChain
 {
@@ -1669,6 +1692,9 @@ typedef struct CvFileStorage CvFileStorage;
 #define CV_STORAGE_FORMAT_AUTO   0
 #define CV_STORAGE_FORMAT_XML    8
 #define CV_STORAGE_FORMAT_YAML  16
+#define CV_STORAGE_FORMAT_JSON  24
+#define CV_STORAGE_BASE64       64
+#define CV_STORAGE_WRITE_BASE64  (CV_STORAGE_BASE64 | CV_STORAGE_WRITE)
 
 /** @brief List of attributes. :
 
@@ -1738,7 +1764,7 @@ typedef struct CvString
 }
 CvString;
 
-/** All the keys (names) of elements in the readed file storage
+/** All the keys (names) of elements in the read file storage
    are stored in the hash to speed up the lookup operations: */
 typedef struct CvStringHashNode
 {
@@ -1829,6 +1855,6 @@ CvModuleInfo;
 
 /** @} */
 
-#endif /*__OPENCV_CORE_TYPES_H__*/
+#endif /*OPENCV_CORE_TYPES_H*/
 
 /* End of file. */

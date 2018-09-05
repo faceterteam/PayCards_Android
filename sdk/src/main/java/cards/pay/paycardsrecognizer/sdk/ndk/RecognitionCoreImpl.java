@@ -21,6 +21,8 @@ public interface RecognitionCoreImpl {
     // XXX must be called after setCameraSensorOrientation()
     void setDisplayParameters(Display display);
 
+    void setDisplayParameters(int rotation, boolean naturalRotationIsLandscape);
+
     void calcWorkingArea(int width, int height, int captureAreaWidth);
 
     Rect getCardFrameRect();
