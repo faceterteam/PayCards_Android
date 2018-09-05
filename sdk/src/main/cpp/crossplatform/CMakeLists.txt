@@ -1,0 +1,72 @@
+cmake_minimum_required(VERSION 3.4.1)
+
+add_library(crossplatform STATIC
+        CrossPlatform/CaffePredictor/CaffeDatum.cpp
+        CrossPlatform/CaffePredictor/CaffeDatumList.cpp
+        CrossPlatform/CaffePredictor/CaffeNeuralNetwork.cpp
+        CrossPlatform/CaffePredictor/CaffeObjectFactory.cpp
+        CrossPlatform/CaffePredictor/CaffeResult.cpp
+        CrossPlatform/CaffePredictor/CaffeResultList.cpp
+        CrossPlatform/CV/canny.cpp
+        CrossPlatform/CV/hough.cpp
+        CrossPlatform/CV/warp.cpp
+        CrossPlatform/Recognizer/DateRecognizer.cpp
+        CrossPlatform/Recognizer/EdgesDetector.cpp
+        CrossPlatform/Recognizer/FrameStorage.cpp
+        CrossPlatform/Recognizer/NameRecognizer.cpp
+        CrossPlatform/Recognizer/NumberRecognizer.cpp
+        CrossPlatform/Recognizer/RecognitionCore.cpp
+        CrossPlatform/Recognizer/RecognitionResult.cpp
+        CrossPlatform/Recognizer/Utils.cpp
+        CrossPlatform/ServiceContainer.cpp
+        CrossPlatform/Torch/TorchManager.cpp
+        jniImpl/RecognitionCoreDelegate.cpp
+        jniImpl/TorchDelegate.cpp
+        )
+
+find_package(OpenCV REQUIRED
+        COMPONENTS opencv_objdetect opencv_imgcodecs opencv_imgproc opencv_ml opencv_core)
+
+set_target_properties(crossplatform PROPERTIES
+        CXX_EXTENSIONS OFF
+        CXX_STANDARD 11)
+target_compile_options(crossplatform PRIVATE
+        -fdata-sections
+        -marm -Wno-unused-command-line-argument
+        -frtti -fexceptions
+        -O3)
+
+target_include_directories(crossplatform
+        PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        CrossPlatform
+        CrossPlatform/CaffePredictor
+        CrossPlatform/CV
+        CrossPlatform/Include
+        CrossPlatform/Include/NeuralNetwork
+        CrossPlatform/Include/Public
+        CrossPlatform/Include/Recognizer
+        CrossPlatform/Include/Torch
+        CrossPlatform/Recognizer
+        CrossPlatform/Torch
+        jniImpl)
+
+if (${ANDROID_ABI} STREQUAL "armeabi-v7a")
+    set_property(TARGET crossplatform APPEND_STRING PROPERTY COMPILE_FLAGS " -mfpu=neon")
+elseif(${ANDROID_ABI} STREQUAL "x86")
+    set_property(TARGET crossplatform
+            APPEND_STRING PROPERTY COMPILE_FLAGS
+            " -mssse3  -Wno-unknown-attributes \
+                       -Wno-deprecated-declarations \
+                       -Wno-constant-conversion \
+                       -Wno-static-in-inline")
+endif()
+
+target_link_libraries(crossplatform
+        PRIVATE
+        eigen
+        caffe
+        libyuv
+        PUBLIC
+        ${OpenCV_LIBS}
+)
