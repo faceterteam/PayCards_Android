@@ -19,7 +19,7 @@ See live demo: [pay.cards](https://play.google.com/store/apps/details?id=cards.p
 
     ```gradle
     dependencies {
-        compile 'cards.pay:paycardsrecognizer:1.0.0'
+        implementation 'cards.pay:paycardsrecognizer:1.1.0'
     }
     ```
 
