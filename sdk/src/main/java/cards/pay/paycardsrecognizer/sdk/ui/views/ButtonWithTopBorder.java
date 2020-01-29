@@ -3,7 +3,7 @@ package cards.pay.paycardsrecognizer.sdk.ui.views;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.support.v7.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatButton;
 import android.util.AttributeSet;
 
 public class ButtonWithTopBorder extends AppCompatButton {

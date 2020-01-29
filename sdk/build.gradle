@@ -12,7 +12,7 @@ android {
         versionCode Integer.parseInt(VERSION_CODE)
         versionName VERSION_NAME
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         externalNativeBuild {
             cmake {
@@ -56,8 +56,8 @@ android {
 }
 
 dependencies {
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
-    implementation "com.android.support:appcompat-v7:$rootProject.ext.supportLibVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
+    implementation "androidx.appcompat:appcompat:$rootProject.ext.appCompatVersion"
     implementation "com.facebook.device.yearclass:yearclass:$rootProject.ext.yearclassVersion"
 
     testImplementation "junit:junit:$rootProject.ext.junitVersion"

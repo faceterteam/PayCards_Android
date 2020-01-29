@@ -3,8 +3,8 @@ package cards.pay.paycardsrecognizer.sdk.camera;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.support.annotation.RestrictTo;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.RestrictTo;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
 
 import com.facebook.device.yearclass.YearClass;
