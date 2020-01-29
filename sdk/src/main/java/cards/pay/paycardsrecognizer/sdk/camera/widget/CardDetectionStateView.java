@@ -6,10 +6,15 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorInt;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.content.res.AppCompatResources;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -135,41 +140,48 @@ public class CardDetectionStateView extends View {
     }
 
     private void initCornerDrawables(Context context) {
-        mCornerTopLeftDrawable = (BitmapDrawable) context.getResources().getDrawable(R.drawable.wocr_card_frame_rect_corner_top_left);
+        mCornerTopLeftDrawable = (BitmapDrawable) AppCompatResources.getDrawable(context, R.drawable.wocr_card_frame_rect_corner_top_left);
 
         Matrix m = new Matrix();
         Bitmap bitmap = mCornerTopLeftDrawable.getBitmap();
+        bitmap = changeBitmapColor(bitmap, ContextCompat.getColor(context, R.color.wocr_accent));
 
+        mCornerTopLeftDrawable = initDrawable(context, bitmap, m);
         m.setRotate(90);
-        mCornerTopRightDrawable = new BitmapDrawable(context.getResources(),
-                Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true));
-
+        mCornerTopRightDrawable = initDrawable(context, bitmap, m);
         m.setRotate(180);
-        mCornerBottomRightDrawable = new BitmapDrawable(context.getResources(),
-                Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true));
-
+        mCornerBottomRightDrawable = initDrawable(context, bitmap, m);
         m.setRotate(270);
-        mCornerBottomLeftDrawable = new BitmapDrawable(context.getResources(),
-                Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true));
-
+        mCornerBottomLeftDrawable = initDrawable(context, bitmap, m);
     }
 
     private void initLineDrawables(Context context) {
         mLineTopDrawable = (BitmapDrawable) context.getResources().getDrawable(R.drawable.wocr_card_frame_rect_line_top);
         Matrix m = new Matrix();
         Bitmap bitmap = mLineTopDrawable.getBitmap();
+        bitmap = changeBitmapColor(bitmap, ContextCompat.getColor(context, R.color.wocr_accent));
 
+        mLineTopDrawable = initDrawable(context, bitmap, m);
         m.setRotate(90);
-        mLineRightDrawable = new BitmapDrawable(context.getResources(),
-                Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true));
-
+        mLineRightDrawable = initDrawable(context, bitmap, m);
         m.setRotate(180);
-        mLineBottomDrawable = new BitmapDrawable(context.getResources(),
-                Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true));
-
+        mLineBottomDrawable = initDrawable(context, bitmap, m);
         m.setRotate(270);
-        mLineLeftDrawable = new BitmapDrawable(context.getResources(),
+        mLineLeftDrawable = initDrawable(context, bitmap, m);
+    }
+
+    private BitmapDrawable initDrawable(Context context, Bitmap bitmap, Matrix m) {
+        return new BitmapDrawable(context.getResources(),
                 Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true));
+    }
+
+    public static Bitmap changeBitmapColor(Bitmap bitmap, @ColorInt int color) {
+        Paint paint = new Paint();
+        paint.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
+        Bitmap bitmapResult = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmapResult);
+        canvas.drawBitmap(bitmap, 0, 0, paint);
+        return bitmapResult;
     }
 
     @Override

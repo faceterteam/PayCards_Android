@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources
-    xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <color name="wocr_primary_dark">#00897B</color>
     <color name="wocr_primary">#26a69a</color>
