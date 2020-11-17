@@ -19,7 +19,8 @@
         </activity>
 
         <activity
-            android:name=".CardDetailsActivity"
+            android:name=".CardDetailsActiv
+
             android:parentActivityName=".IntroActivity"
             android:windowSoftInputMode="adjustResize"
             tools:ignore="UnusedAttribute">
@@ -38,3 +39,4 @@
         </activity>
     </application>
 </manifest>
+Hii
