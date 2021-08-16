@@ -10,7 +10,7 @@ See live demo: [pay.cards](https://play.google.com/store/apps/details?id=cards.p
 
     ```gradle
     repositories {
-         maven { url "http://pay.cards/maven" }
+         maven { url "https://pay.cards/maven" }
     }
     ```
 
