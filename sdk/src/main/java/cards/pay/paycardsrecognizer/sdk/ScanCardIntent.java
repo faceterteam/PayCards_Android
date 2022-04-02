@@ -64,7 +64,7 @@ public final class ScanCardIntent {
         }
 
         /**
-         * Scan expiration date. Default: <b>true</b>
+         * Scan the card holder's name. Default: <b>true</b>
          */
         public Builder setScanCardHolder(boolean scanCardHolder) {
             mScanCardHolder = scanCardHolder;
