@@ -7,8 +7,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        //classpath 'com.android.tools.build:gradle:3.3.0-alpha04'
-        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath 'com.android.tools.build:gradle:3.5.3'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -33,12 +32,14 @@ ext {
     compileSdkVersion = 28
 
     // App dependencies
-    supportLibVersion = '27.1.1'
-    yearclassVersion = "2.1.0"
+    appCompatVersion = '1.1.0'
+    yearclassVersion = '2.1.0'
+    gridLayoutVersion = '1.0.0'
+    materialVersion = '1.0.0'
 
     // App test dependencies
     junitVersion = '4.12'
-    espressoVersion = '3.0.2'
-    robolectricVersion = "3.8"
-    mockitoVersion = "2.21.0"
+    espressoVersion = '3.2.0'
+    robolectricVersion = '3.8'
+    mockitoVersion = '2.21.0'
 }

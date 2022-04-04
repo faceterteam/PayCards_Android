@@ -16,7 +16,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode Integer.parseInt(DEMO_APP_VERSION_CODE)
         versionName DEMO_APP_VERSION_NAME
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resConfigs "en"
     }
     signingConfigs {
@@ -49,10 +49,10 @@ dependencies {
     implementation project(path: ":sdk")
     //debugCompile project(path: ":sdk", configuration: 'release')
     //releaseCompile project(path: ":sdk", configuration: 'release')
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
-    implementation "com.android.support:appcompat-v7:$rootProject.ext.supportLibVersion"
-    implementation "com.android.support:gridlayout-v7:$rootProject.ext.supportLibVersion"
-    implementation "com.android.support:design:$rootProject.ext.supportLibVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
+    implementation "androidx.appcompat:appcompat:$rootProject.ext.appCompatVersion"
+    implementation "androidx.gridlayout:gridlayout:$rootProject.ext.gridLayoutVersion"
+    implementation "com.google.android.material:material:$rootProject.ext.materialVersion"
     testImplementation "junit:junit:$rootProject.ext.junitVersion"
 }
 

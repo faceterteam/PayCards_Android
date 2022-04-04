@@ -1,8 +1,8 @@
 package cards.pay.paycardsrecognizer.sdk.camera;
 
 import android.graphics.Rect;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;

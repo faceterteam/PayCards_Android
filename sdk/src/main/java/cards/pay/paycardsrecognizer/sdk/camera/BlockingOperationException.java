@@ -1,6 +1,6 @@
 package cards.pay.paycardsrecognizer.sdk.camera;
 
-import android.support.annotation.RestrictTo;
+import androidx.annotation.RestrictTo;
 
 import java.io.IOException;
 

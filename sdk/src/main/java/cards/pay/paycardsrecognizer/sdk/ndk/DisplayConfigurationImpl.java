@@ -1,8 +1,8 @@
 package cards.pay.paycardsrecognizer.sdk.ndk;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.VisibleForTesting;
 import android.util.Log;
 import android.view.Display;
 

@@ -16,7 +16,7 @@
 package cards.pay.paycardsrecognizer.sdk.camera.gles;
 
 import android.opengl.Matrix;
-import android.support.annotation.RestrictTo;
+import androidx.annotation.RestrictTo;
 
 /**
  * Base class for a 2d object.  Includes position, scale, rotation, and flat-shaded color.

@@ -2,7 +2,7 @@ package cards.pay.paycardsrecognizer.sdk.ui.views;
 
 import android.animation.Animator;
 import android.content.Context;
-import android.support.annotation.RestrictTo;
+import androidx.annotation.RestrictTo;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ProgressBar;

@@ -2,12 +2,11 @@ package cards.pay.paycardsrecognizer.sdk.ndk;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.VisibleForTesting;
 import android.util.Log;
-import android.view.Display;
 
 import java.io.IOException;
 

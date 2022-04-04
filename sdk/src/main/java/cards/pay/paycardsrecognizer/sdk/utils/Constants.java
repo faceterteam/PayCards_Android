@@ -1,6 +1,6 @@
 package cards.pay.paycardsrecognizer.sdk.utils;
 
-import android.support.annotation.RestrictTo;
+import androidx.annotation.RestrictTo;
 
 import cards.pay.paycardsrecognizer.sdk.BuildConfig;
 

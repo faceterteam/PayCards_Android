@@ -1,7 +1,7 @@
 package cards.pay.paycardsrecognizer.sdk.camera;
 
 import android.content.Context;
-import android.support.annotation.RestrictTo;
+import androidx.annotation.RestrictTo;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
