@@ -1,8 +1,8 @@
-# PAY.CARDS RECOGNIZER
+# Card Scanner
 
 Automatic recognition of bank card data using built-in camera on Android devices.
 
-See live demo: [pay.cards](https://play.google.com/store/apps/details?id=cards.pay.demo)
+
 
 ### Installation
 
