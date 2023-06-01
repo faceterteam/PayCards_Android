@@ -2,16 +2,12 @@ package cards.pay.paycardsrecognizer.sdk.ndk;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.util.Log;
-import android.view.Display;
 
 import java.io.IOException;
 
-@RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class RecognitionCore {
 
     private static volatile RecognitionCore sInstance;
@@ -78,7 +74,7 @@ public final class RecognitionCore {
     }
 
     @RecognitionConstants.DetectedBorderFlags
-    public int processFrameYV12(int width, int height, byte buffer[]) {
+    public int processFrameYV12(int width, int height, byte[] buffer) {
         return sImpl.processFrameYV12(width, height, buffer);
     }
 

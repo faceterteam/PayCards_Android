@@ -1,5 +1,7 @@
 package cards.pay.paycardsrecognizer.sdk.utils;
 
+import androidx.annotation.NonNull;
+
 public class Size implements Comparable<Size> {
 
     public final int width;
@@ -42,6 +44,7 @@ public class Size implements Comparable<Size> {
         return 0;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return width + "x" + height;

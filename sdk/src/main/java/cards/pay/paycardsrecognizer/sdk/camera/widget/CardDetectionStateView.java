@@ -15,6 +15,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+
 import cards.pay.paycardsrecognizer.sdk.R;
 import cards.pay.paycardsrecognizer.sdk.ndk.RecognitionConstants;
 import cards.pay.paycardsrecognizer.sdk.ndk.RecognitionResult;
@@ -97,14 +100,14 @@ public class CardDetectionStateView extends View {
 
         mCardFrame = new CardRectCoordsMapper();
 
-        int mBackgroundDrawableColor = context.getResources().getColor(R.color.wocr_card_shadow_color);
+        int mBackgroundDrawableColor = ContextCompat.getColor(context, R.color.wocr_card_shadow_color);
 
         mCornerPaddingTop = density * RECT_CORNER_PADDING_TOP;
         mCornerPaddingLeft = density * RECT_CORNER_PADDING_LEFT;
         mCornerLineWidth = density * RECT_CORNER_LINE_STROKE_WIDTH;
         mCornerRadius = density * RECT_CORNER_RADIUS;
 
-        mCardGradientDrawable = context.getResources().getDrawable(R.drawable.wocr_frame_rect_gradient);
+        mCardGradientDrawable = ContextCompat.getDrawable(context, R.drawable.wocr_frame_rect_gradient);
 
         initCornerDrawables(context);
         initLineDrawables(context);
@@ -135,8 +138,15 @@ public class CardDetectionStateView extends View {
     }
 
     private void initCornerDrawables(Context context) {
-        mCornerTopLeftDrawable = (BitmapDrawable) context.getResources().getDrawable(R.drawable.wocr_card_frame_rect_corner_top_left);
+        BitmapDrawable tempDrawable = (BitmapDrawable) ContextCompat.getDrawable(context, R.drawable.wocr_card_frame_rect_corner_top_left);
+        if (tempDrawable == null) {
+            return;
+        }
 
+        Drawable mutatedDrawable = DrawableCompat.wrap(tempDrawable).mutate();
+        int color = ContextCompat.getColor(getContext(), android.R.color.holo_purple);
+        DrawableCompat.setTint(mutatedDrawable, color);
+        mCornerTopLeftDrawable = (BitmapDrawable) mutatedDrawable;
         Matrix m = new Matrix();
         Bitmap bitmap = mCornerTopLeftDrawable.getBitmap();
 
@@ -155,7 +165,7 @@ public class CardDetectionStateView extends View {
     }
 
     private void initLineDrawables(Context context) {
-        mLineTopDrawable = (BitmapDrawable) context.getResources().getDrawable(R.drawable.wocr_card_frame_rect_line_top);
+        mLineTopDrawable = (BitmapDrawable) ContextCompat.getDrawable(context, R.drawable.wocr_card_frame_rect_line_top);
         Matrix m = new Matrix();
         Bitmap bitmap = mLineTopDrawable.getBitmap();
 
@@ -258,7 +268,7 @@ public class CardDetectionStateView extends View {
 
     private void refreshCardRectInvalidation() {
         Rect cardRect = mCardFrame.getCardRect();
-        int border = (int)(0.5f + mCornerPaddingLeft) + (int)(0.5f + mCornerLineWidth / 2f);
+        int border = (int) (0.5f + mCornerPaddingLeft) + (int) (0.5f + mCornerLineWidth / 2f);
         mCardRectInvalidation.left = cardRect.left - border;
         mCardRectInvalidation.top = cardRect.top - border;
         mCardRectInvalidation.right = cardRect.right + border;
@@ -271,7 +281,7 @@ public class CardDetectionStateView extends View {
 
         int rectWidth = mCornerTopLeftDrawable.getIntrinsicWidth();
         int rectHeight = mCornerTopLeftDrawable.getIntrinsicHeight();
-        int cornerStroke = (int)(0.5f + mCornerLineWidth / 2f);
+        int cornerStroke = (int) (0.5f + mCornerLineWidth / 2f);
 
         int left1 = Math.round(cardRect.left - mCornerPaddingLeft - cornerStroke);
         int left2 = Math.round(cardRect.right - rectWidth + mCornerPaddingLeft + cornerStroke);
@@ -285,7 +295,7 @@ public class CardDetectionStateView extends View {
         mCornerBottomRightDrawable.setBounds(left2, top2, left2 + rectWidth, top2 + rectHeight);
 
         // Lines
-        int offset = (int)mCornerRadius;
+        int offset = (int) mCornerRadius;
         mLineTopDrawable.setBounds(
                 left1 + offset,
                 top1,
@@ -320,12 +330,12 @@ public class CardDetectionStateView extends View {
                     mCardRectInvalidation.top,
                     mCardRectInvalidation.right,
                     mCardRectInvalidation.bottom
-                    );
+            );
         }
     }
 
     public synchronized void setRecognitionResult(RecognitionResult result) {
-        if (DBG) Log.d(TAG, "setRecognitionResult() called with: " +  "result = [" + result + "]");
+        if (DBG) Log.d(TAG, "setRecognitionResult() called with: " + "result = [" + result + "]");
 
         if (!TextUtils.isEmpty(result.getNumber())) {
             mRecognitionResultCardNumber = CardUtils.prettyPrintCardNumber(result.getNumber());
@@ -349,9 +359,9 @@ public class CardDetectionStateView extends View {
     }
 
     void setCameraParameters(int previewSizeWidth,
-                                    int previewSizeHeight,
-                                    int rotation,
-                                    Rect cardFrame) {
+                             int previewSizeHeight,
+                             int rotation,
+                             Rect cardFrame) {
         boolean changed = mCardFrame.setCameraParameters(previewSizeWidth, previewSizeHeight, rotation, cardFrame);
         if (changed) {
             refreshCardRectCoords();

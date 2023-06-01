@@ -1,18 +1,17 @@
 apply plugin: 'com.android.library'
-apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     testBuildType "profiling"
-
+    ndkVersion "25.2.9519653"
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode Integer.parseInt(VERSION_CODE)
         versionName VERSION_NAME
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         externalNativeBuild {
             cmake {
@@ -35,7 +34,6 @@ android {
         }
         debug {
             jniDebuggable true
-            debuggable true
         }
         profiling {
             initWith debug
@@ -48,29 +46,37 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     resourcePrefix "wocr_"
+    namespace 'cards.pay.paycardsrecognizer.sdk'
 }
 
 dependencies {
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
-    implementation "com.android.support:appcompat-v7:$rootProject.ext.supportLibVersion"
-    implementation "com.facebook.device.yearclass:yearclass:$rootProject.ext.yearclassVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
+    implementation "androidx.appcompat:appcompat:1.6.1"
+    implementation "com.facebook.device.yearclass:yearclass:2.1.0"
+    implementation "androidx.camera:camera-camera2:1.2.3"
+    // If you want to additionally use the CameraX Lifecycle library
+    implementation "androidx.camera:camera-lifecycle:1.2.3"
+    // If you want to additionally use the CameraX View class
+    implementation "androidx.camera:camera-view:1.2.3"
 
-    testImplementation "junit:junit:$rootProject.ext.junitVersion"
+//    implementation "androidx.window:window:1.2.0-alpha01"
+
+    testImplementation "junit:junit:4.13.2"
 }
 
-afterEvaluate { project ->
-    android.libraryVariants.all { variant ->
-        tasks.androidJavadocs.doFirst {
-            include '**/cards/pay/paycardsrecognizer/sdk/*.java'
-            options.encoding = "utf-8"
-            options.charSet = "utf-8"
-            options.showFromPublic()
-            failOnError false
-        }
-    }
-}
+//afterEvaluate { project ->
+//    android.libraryVariants.all { variant ->
+//        tasks.androidJavadocs.doFirst {
+//            include '**/cards/pay/paycardsrecognizer/sdk/*.java'
+//            options.encoding = "utf-8"
+//            options.charSet = "utf-8"
+//            options.showFromPublic()
+//            failOnError false
+//        }
+//    }
+//}

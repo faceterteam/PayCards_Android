@@ -1,9 +1,8 @@
 package cards.pay.paycardsrecognizer.sdk.ndk;
 
 import android.graphics.Rect;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.view.Display;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 class RecognitionCoreDummy implements RecognitionCoreImpl {
 

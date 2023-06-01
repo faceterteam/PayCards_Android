@@ -6,12 +6,12 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize">
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_next"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:background="?selectableItemBackground"
@@ -21,7 +21,7 @@
             android:layout_margin="0dp"
             android:text="@string/all_button_next" />
 
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -55,7 +55,7 @@
                 android:layout_marginBottom="4dp"
                 android:text="@string/carddetails_subhead" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/card_number_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -68,15 +68,15 @@
                     android:hint="@string/carddetails_card_number_field_label"
                     tools:text="1234 5678 9012 3456" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/cardholder_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/cardholder_field_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -85,9 +85,9 @@
                     android:inputType="textVisiblePassword|textCapCharacters"
                     tools:text="CARDHOLDER NAME" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/expiry_date_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
                     android:imeOptions="actionDone|flagNoExtractUi"
                     tools:text="01/21" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/scan_button"

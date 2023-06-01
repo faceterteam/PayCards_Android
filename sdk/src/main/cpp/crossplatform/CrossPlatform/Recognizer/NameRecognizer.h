@@ -11,6 +11,7 @@
 
 #include "INameRecognizer.h"
 #include <fstream>
+#include <sstream>
 
 class INeuralNetworkResultList;
 class IServiceContainer;

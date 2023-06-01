@@ -7,12 +7,13 @@ import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.Keep;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.WorkerThread;
+
+import androidx.annotation.Keep;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.WorkerThread;
+
 import android.util.Log;
-import android.view.Display;
 
 import java.io.IOException;
 
@@ -42,7 +43,7 @@ final class RecognitionCoreNdk implements RecognitionCoreImpl {
 
     private final Handler mMainThreadHandler;
 
-    private final Rect mCardFrameRect = new Rect(30, 432, 30+660, 432 + 416);
+    private final Rect mCardFrameRect = new Rect(30, 432, 30 + 660, 432 + 416);
 
     private DisplayConfiguration mDisplayConfiguration = new DisplayConfigurationImpl();
 
@@ -62,25 +63,24 @@ final class RecognitionCoreNdk implements RecognitionCoreImpl {
             Log.e("CardRecognizerCore", "initialization failed", e);
         }
 
-        mMainThreadHandler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                switch (msg.what) {
-                    case MESSAGE_RESULT_RECEIVED:
-                        if (mStatusListener != null) {
-                            RecognitionResult result = (RecognitionResult)msg.obj;
-                            mStatusListener.onRecognitionComplete(result);
-                        }
-                        return true;
-                    case MESSAGE_CARD_IMAGE_RECEIVED:
-                        if (mStatusListener != null) {
-                            Bitmap bitmap = (Bitmap)msg.obj;
-                            mStatusListener.onCardImageReceived(bitmap);
-                        }
-                        return true;
+        mMainThreadHandler = new Handler(Looper.getMainLooper(), msg -> {
+            switch (msg.what) {
+                case MESSAGE_RESULT_RECEIVED: {
+                    if (mStatusListener != null) {
+                        RecognitionResult result = (RecognitionResult) msg.obj;
+                        mStatusListener.onRecognitionComplete(result);
+                    }
+                    return true;
                 }
-                return false;
+                case MESSAGE_CARD_IMAGE_RECEIVED: {
+                    if (mStatusListener != null) {
+                        Bitmap bitmap = (Bitmap) msg.obj;
+                        mStatusListener.onCardImageReceived(bitmap);
+                    }
+                    return true;
+                }
             }
+            return false;
         });
     }
 
@@ -111,10 +111,8 @@ final class RecognitionCoreNdk implements RecognitionCoreImpl {
 
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MESSAGE_TORCH_STATUS_CHANGED:
-                    mListener.onTorchStatusChanged(msg.arg1 != 0);
-                    break;
+            if (msg.what == MESSAGE_TORCH_STATUS_CHANGED) {
+                mListener.onTorchStatusChanged(msg.arg1 != 0);
             }
             super.handleMessage(msg);
         }
@@ -165,7 +163,7 @@ final class RecognitionCoreNdk implements RecognitionCoreImpl {
     }
 
     @DetectedBorderFlags
-    public synchronized int processFrameYV12(int width, int height, byte buffer[]) {
+    public synchronized int processFrameYV12(int width, int height, byte[] buffer) {
         int orientation = mDisplayConfiguration.getPreprocessFrameRotation(width, height);
         if (orientation == -1) return 0;
 
@@ -191,8 +189,8 @@ final class RecognitionCoreNdk implements RecognitionCoreImpl {
             boolean isFirst,
             boolean isFinal,
             String number, String date, String name, String nameRaw,
-                                                    Bitmap cardImage,
-                                                    int numberRectX, int numberRectY, int numberRectWidth, int numberRectHeight
+            Bitmap cardImage,
+            int numberRectX, int numberRectY, int numberRectWidth, int numberRectHeight
     ) {
         final Rect numberRect;
 
@@ -271,5 +269,5 @@ final class RecognitionCoreNdk implements RecognitionCoreImpl {
     native void nativeResetResult();
 
     @DetectedBorderFlags
-    native int nativeProcessFrameYV12(int width, int height, int rotation, byte buffer[]);
+    native int nativeProcessFrameYV12(int width, int height, int rotation, byte[] buffer);
 }

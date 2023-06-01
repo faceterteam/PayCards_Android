@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:text="@string/wocr_button_enter_card_number" />
 
-        <android.support.v7.widget.AppCompatImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/wocr_iv_flash_id"
             style="@style/wocr_FlashButton"
             android:layout_height="wrap_content"

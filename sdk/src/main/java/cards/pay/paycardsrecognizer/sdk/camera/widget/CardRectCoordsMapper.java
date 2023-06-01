@@ -17,11 +17,11 @@ class CardRectCoordsMapper {
 
     private static final Rect DEFAULT_CAMERA_RECT_LANDSCAPE = new Rect(310, 152, 970, 568);
 
-    private static final PointF DEFAULT_CARD_NUMBER_POS = new PointF(60f,268f);
+    private static final PointF DEFAULT_CARD_NUMBER_POS = new PointF(60f, 268f);
 
-    private static final PointF DEFAULT_CARD_DATE_POS = new PointF(289f,321f);
+    private static final PointF DEFAULT_CARD_DATE_POS = new PointF(289f, 321f);
 
-    private static final PointF DEFAULT_CARD_HOLDER_POS = new PointF(33f,364f);
+    private static final PointF DEFAULT_CARD_HOLDER_POS = new PointF(33f, 364f);
 
     private static final float DEFAULT_CARD_NUMBER_FONT_SIZE = 40;
 
@@ -41,7 +41,7 @@ class CardRectCoordsMapper {
     /**
      * Camera resolution
      */
-    private final int mCameraPreviewSize[] = new int[]{DEFAULT_CAMERA_RESOLUTION[0], DEFAULT_CAMERA_RESOLUTION[1]};
+    private final int[] mCameraPreviewSize = new int[]{DEFAULT_CAMERA_RESOLUTION[0], DEFAULT_CAMERA_RESOLUTION[1]};
 
     /**
      * Camera rotation
@@ -185,7 +185,7 @@ class CardRectCoordsMapper {
         OrientationHelper.rotateRect(mCardCameraRectRaw, mCameraPreviewSize[0], mCameraPreviewSize[1], mCameraRotation, mCardCameraRect);
 
         if (DBG) Log.d(TAG, "refreshTransform() widthXheight: " + mViewWidth + "x" + mViewHeight
-                +"; translateXY: [" + translateX +"," + mTranslateY + "], scale: " + mScale);
+                + "; translateXY: [" + translateX + "," + mTranslateY + "], scale: " + mScale);
     }
 
     private void refreshCardRect() {

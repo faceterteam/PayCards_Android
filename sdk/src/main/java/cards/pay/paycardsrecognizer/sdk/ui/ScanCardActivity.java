@@ -3,11 +3,11 @@ package cards.pay.paycardsrecognizer.sdk.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.fragment.app.Fragment;
+import androidx.core.view.ViewCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.WindowManager;
 
@@ -55,6 +55,7 @@ public class ScanCardActivity extends AppCompatActivity implements ScanCardFragm
 
     private void showScanCard() {
         Fragment fragment = new ScanCardFragment();
+
         Bundle args = new Bundle(1);
         args.putParcelable(ScanCardIntent.KEY_SCAN_CARD_REQUEST, getScanRequest());
         fragment.setArguments(args);
@@ -76,7 +77,7 @@ public class ScanCardActivity extends AppCompatActivity implements ScanCardFragm
 
     @Override
     @RestrictTo(RestrictTo.Scope.LIBRARY)
-    public void onScanCardFinished(Card card, @Nullable byte cardImage[]) {
+    public void onScanCardFinished(Card card, @Nullable byte[] cardImage) {
         Intent intent = new Intent();
         intent.putExtra(ScanCardIntent.RESULT_PAYCARDS_CARD, (Parcelable) card);
         if (cardImage != null) intent.putExtra(ScanCardIntent.RESULT_CARD_IMAGE, cardImage);

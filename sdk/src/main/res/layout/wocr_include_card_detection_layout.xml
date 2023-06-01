@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <cards.pay.paycardsrecognizer.sdk.camera.widget.CameraPreviewLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -8,12 +7,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="true"
+    android:clipChildren="true"
     tools:showIn="@layout/wocr_fragment_scan_card">
 
-    <SurfaceView
-        android:id="@+id/surface_view"
+    <androidx.camera.view.PreviewView
+        android:id="@+id/cameraPreview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <cards.pay.paycardsrecognizer.sdk.camera.widget.CardDetectionStateView
         android:id="@+id/wocr_card_detection_state"

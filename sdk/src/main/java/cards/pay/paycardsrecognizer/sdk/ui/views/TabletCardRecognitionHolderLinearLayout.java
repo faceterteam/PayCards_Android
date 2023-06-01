@@ -2,10 +2,11 @@ package cards.pay.paycardsrecognizer.sdk.ui.views;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.support.annotation.RestrictTo;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import androidx.annotation.RestrictTo;
 
 import cards.pay.paycardsrecognizer.sdk.R;
 

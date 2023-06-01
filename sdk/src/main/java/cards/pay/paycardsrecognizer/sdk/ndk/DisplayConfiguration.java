@@ -1,6 +1,6 @@
 package cards.pay.paycardsrecognizer.sdk.ndk;
 
-import android.support.annotation.IntRange;
+import androidx.annotation.IntRange;
 
 import cards.pay.paycardsrecognizer.sdk.ndk.RecognitionConstants.WorkAreaOrientation;
 

@@ -1,12 +1,16 @@
 package cards.pay.paycardsrecognizer.sdk.ndk;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.VisibleForTesting;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.VisibleForTesting;
+
 import android.util.Log;
 import android.view.Display;
 
 import cards.pay.paycardsrecognizer.sdk.BuildConfig;
+import cards.pay.paycardsrecognizer.sdk.camera.OrientationHelper;
 import cards.pay.paycardsrecognizer.sdk.ndk.RecognitionConstants.WorkAreaOrientation;
 
 import static cards.pay.paycardsrecognizer.sdk.ndk.RecognitionConstants.WORK_AREA_ORIENTATION_LANDSCAPE_LEFT;
@@ -30,7 +34,7 @@ public class DisplayConfigurationImpl implements DisplayConfiguration {
 
     // The orientation of the camera image. The value is the angle that the camera image needs
     // to be rotated clockwise so it shows correctly on the display in its natural orientation.
-    private int mCameraSensorRotation  = 0;
+    private int mCameraSensorRotation = 0;
 
     private int mPreprocessFrameRotation = 0;
 
@@ -38,9 +42,7 @@ public class DisplayConfigurationImpl implements DisplayConfiguration {
     }
 
     public void setDisplayParameters(Display display) {
-        setDisplayParameters(DisplayHelper.getDisplayRotationDegrees(display),
-                DisplayHelper.naturalOrientationIsLandscape(display)
-                );
+        setDisplayParameters(OrientationHelper.getDisplayRotationDegrees(display), OrientationHelper.naturalOrientationIsLandscape(display));
     }
 
     @VisibleForTesting
@@ -48,8 +50,8 @@ public class DisplayConfigurationImpl implements DisplayConfiguration {
         mDisplayRotation = displayRotation;
         mNaturalOrientationIsLandscape = naturalOrientationIsLandscape;
         if (DBG) Log.d(TAG, "setDisplayParameters() called with: "
-                +  "rotation: "+ mDisplayRotation
-                +  "; natural orientation: " + (mNaturalOrientationIsLandscape ? "landscape" : "portait (or square)"));
+                + "rotation: " + mDisplayRotation
+                + "; natural orientation: " + (mNaturalOrientationIsLandscape ? "landscape" : "portait (or square)"));
         refreshPreprocessFrameRotation();
     }
 
@@ -60,7 +62,8 @@ public class DisplayConfigurationImpl implements DisplayConfiguration {
     }
 
     public void setCameraParameters(int sensorRotation) {
-        if (DBG) Log.d(TAG, "setCameraParameters() called with: " +  "sensorRotation = [" + sensorRotation + "]");
+        if (DBG)
+            Log.d(TAG, "setCameraParameters() called with: " + "sensorRotation = [" + sensorRotation + "]");
         mCameraSensorRotation = sensorRotation;
         refreshPreprocessFrameRotation();
     }
@@ -88,7 +91,7 @@ public class DisplayConfigurationImpl implements DisplayConfiguration {
     }
 
     private void refreshPreprocessFrameRotation() {
-        int rotation = DisplayHelper.getCameraRotationToNatural(mDisplayRotation, mCameraSensorRotation, false);
+        int rotation = OrientationHelper.getCameraRotationToNatural(mDisplayRotation, mCameraSensorRotation, false);
 
         int nativeDisplayRotation = getNativeDisplayRotation();
         if (nativeDisplayRotation == WORK_AREA_ORIENTATION_LANDSCAPE_RIGHT
@@ -96,7 +99,8 @@ public class DisplayConfigurationImpl implements DisplayConfiguration {
             rotation = (360 + rotation - 90) % 360;
         }
         mPreprocessFrameRotation = rotation;
-        if (DBG) Log.v(TAG, "refreshPreprocessFrameRotation() rotation result: " + mPreprocessFrameRotation);
+        if (DBG)
+            Log.v(TAG, "refreshPreprocessFrameRotation() rotation result: " + mPreprocessFrameRotation);
     }
 
     @SuppressLint("Range")
@@ -125,6 +129,7 @@ public class DisplayConfigurationImpl implements DisplayConfiguration {
         return true;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "DisplayConfigurationImpl{" +
