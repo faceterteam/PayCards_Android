@@ -1,6 +1,7 @@
-apply plugin: 'com.android.application'
-
-uploadArchives.enabled = false
+plugins {
+    id 'com.android.application'
+}
+//uploadArchives.enabled = false
 
 ext.private = new Properties()
 if (rootProject.file('private.properties').exists()) {
@@ -16,8 +17,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode Integer.parseInt(DEMO_APP_VERSION_CODE)
         versionName DEMO_APP_VERSION_NAME
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        resConfigs "en"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        resourceConfigurations += ['en']
     }
     signingConfigs {
         release
@@ -39,9 +40,17 @@ android {
         }
     }
     packagingOptions {
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
+        resources {
+            excludes += ['META-INF/LICENSE.txt', 'META-INF/NOTICE.txt']
+        }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    namespace 'cards.pay.sample.demo'
 }
 
 dependencies {
@@ -49,11 +58,11 @@ dependencies {
     implementation project(path: ":sdk")
     //debugCompile project(path: ":sdk", configuration: 'release')
     //releaseCompile project(path: ":sdk", configuration: 'release')
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
-    implementation "com.android.support:appcompat-v7:$rootProject.ext.supportLibVersion"
-    implementation "com.android.support:gridlayout-v7:$rootProject.ext.supportLibVersion"
-    implementation "com.android.support:design:$rootProject.ext.supportLibVersion"
-    testImplementation "junit:junit:$rootProject.ext.junitVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
+    implementation "androidx.appcompat:appcompat:1.6.1"
+    implementation "androidx.gridlayout:gridlayout:1.0.0"
+    implementation "com.google.android.material:material:1.9.0"
+    testImplementation "junit:junit:4.13.2"
 }
 
 if (ext.private.getProperty("release.StoreFile") != null) {

@@ -3,7 +3,9 @@ package cards.pay.paycardsrecognizer.sdk;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.io.Serializable;
 
@@ -73,6 +75,7 @@ public class Card implements Serializable, Parcelable {
         return result;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Card{" +

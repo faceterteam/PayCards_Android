@@ -1,5 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cards.pay.paycardsrecognizer.sdk">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
@@ -17,7 +16,7 @@
     <application>
         <activity
             android:name="cards.pay.paycardsrecognizer.sdk.ui.ScanCardActivity"
-            android:theme="@style/wocr_RecognizerTheme" />
+            android:theme="@style/wocr_RecognizerTheme"/>
     </application>
 
 

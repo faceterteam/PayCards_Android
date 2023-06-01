@@ -4,28 +4,28 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
-import android.support.annotation.RestrictTo;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
+import androidx.annotation.RestrictTo;
+import androidx.camera.view.PreviewView;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
 
 import cards.pay.paycardsrecognizer.sdk.R;
 import cards.pay.paycardsrecognizer.sdk.utils.Constants;
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-public final class CameraPreviewLayout extends FrameLayout {
+public class CameraPreviewLayout extends FrameLayout {
 
     private static final String TAG = "CameraPreviewLayout";
     private static final boolean DBG = Constants.DEBUG;
 
-    private SurfaceView mSurfaceView;
-
+    private PreviewView mPreviewView;
     private CardDetectionStateView mDetectionStateOverlay;
 
     private OnWindowFocusChangedListener mWindowFocusChangedListener;
@@ -35,7 +35,6 @@ public final class CameraPreviewLayout extends FrameLayout {
     /**
      * These are used for computing child frames based on their gravity.
      */
-    private final Rect mTmpCard = new Rect();
     private final Rect mTmp = new Rect();
 
     public CameraPreviewLayout(Context context) {
@@ -51,8 +50,8 @@ public final class CameraPreviewLayout extends FrameLayout {
         mCardFrame = new CardRectCoordsMapper();
     }
 
-    public SurfaceView getSurfaceView() {
-        return mSurfaceView;
+    public PreviewView getPreviewView() {
+        return mPreviewView;
     }
 
     public CardDetectionStateView getDetectionStateOverlay() {
@@ -67,7 +66,8 @@ public final class CameraPreviewLayout extends FrameLayout {
                                     int previewSizeHeight,
                                     int rotation,
                                     Rect cardFrame) {
-        if (DBG) Log.d(TAG, "setCameraParameters() called with: " +  "previewSizeWidth = [" + previewSizeWidth + "], previewSizeHeight = [" + previewSizeHeight + "], rotation = [" + rotation + "], cardFrame = [" + cardFrame + "]");
+        if (DBG)
+            Log.d(TAG, "setCameraParameters() called with: " + "previewSizeWidth = [" + previewSizeWidth + "], previewSizeHeight = [" + previewSizeHeight + "], rotation = [" + rotation + "], cardFrame = [" + cardFrame + "]");
         mDetectionStateOverlay.setCameraParameters(previewSizeWidth, previewSizeHeight, rotation, cardFrame);
 
         boolean changed = mCardFrame.setCameraParameters(previewSizeWidth, previewSizeHeight, rotation, cardFrame);
@@ -85,7 +85,7 @@ public final class CameraPreviewLayout extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mSurfaceView = (SurfaceView) getChildAt(0);
+        mPreviewView = (PreviewView) getChildAt(0);
         mDetectionStateOverlay = (CardDetectionStateView) getChildAt(1);
     }
 
@@ -116,10 +116,11 @@ public final class CameraPreviewLayout extends FrameLayout {
 
         for (int i = 0; i < count; i++) {
             final View child = getChildAt(i);
-            final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+            final CameraPreviewLayout.LayoutParams lp = (CameraPreviewLayout.LayoutParams) child.getLayoutParams();
 
             if (child.getVisibility() == GONE
-                    || lp.cardGravity == LayoutParams.UNSPECIFIED_CARD_GRAVITY) continue;
+                    || lp.cardGravity == CameraPreviewLayout.LayoutParams.UNSPECIFIED_CARD_GRAVITY)
+                continue;
 
             final int layoutDirection = ViewCompat.getLayoutDirection(this);
             final int childWidth = child.getMeasuredWidth();
@@ -131,10 +132,9 @@ public final class CameraPreviewLayout extends FrameLayout {
         }
     }
 
-
     @SuppressLint("RtlHardcoded")
     private void getChildRect(int layoutDirection,
-                              Rect cardRect, Rect out, LayoutParams lp, int childWidth, int childHeight) {
+                              Rect cardRect, Rect out, CameraPreviewLayout.LayoutParams lp, int childWidth, int childHeight) {
         final int absCardGravity = GravityCompat.getAbsoluteGravity(
                 resolveGravity(lp.cardGravity),
                 layoutDirection);
@@ -146,28 +146,26 @@ public final class CameraPreviewLayout extends FrameLayout {
         int top;
 
         switch (cardHgrav) {
-            default:
-            case Gravity.LEFT:
-                left = cardRect.left + lp.leftMargin;
-                break;
             case Gravity.RIGHT:
-                left = cardRect.right  - childWidth - lp.rightMargin;
+                left = cardRect.right - childWidth - lp.rightMargin;
                 break;
             case Gravity.CENTER_HORIZONTAL:
                 left = cardRect.left + cardRect.width() / 2 - childWidth / 2 + lp.leftMargin - lp.rightMargin;
                 break;
+            default:
+                left = cardRect.left + lp.leftMargin;
+                break;
         }
 
         switch (cardVgrav) {
-            default:
-            case Gravity.TOP:
-                top = cardRect.top - childHeight - lp.bottomMargin;
-                break;
             case Gravity.BOTTOM:
                 top = cardRect.bottom + lp.topMargin;
                 break;
             case Gravity.CENTER_VERTICAL:
                 top = cardRect.top + cardRect.height() / 2 - childHeight / 2 + lp.topMargin - lp.bottomMargin;
+                break;
+            default:
+                top = cardRect.top - childHeight - lp.bottomMargin;
                 break;
         }
 
@@ -184,7 +182,7 @@ public final class CameraPreviewLayout extends FrameLayout {
         return gravity;
     }
 
-    private void constrainChildRect(LayoutParams lp, Rect out, int childWidth, int childHeight) {
+    private void constrainChildRect(CameraPreviewLayout.LayoutParams lp, Rect out, int childWidth, int childHeight) {
         final int width = getWidth();
         final int height = getHeight();
 
@@ -200,13 +198,13 @@ public final class CameraPreviewLayout extends FrameLayout {
     }
 
     @Override
-    public LayoutParams generateLayoutParams(AttributeSet attrs) {
+    public CameraPreviewLayout.LayoutParams generateLayoutParams(AttributeSet attrs) {
         return new CameraPreviewLayout.LayoutParams(getContext(), attrs);
     }
 
     @Override
-    protected LayoutParams generateDefaultLayoutParams() {
-        return new CameraPreviewLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+    protected CameraPreviewLayout.LayoutParams generateDefaultLayoutParams() {
+        return new CameraPreviewLayout.LayoutParams(CameraPreviewLayout.LayoutParams.MATCH_PARENT, CameraPreviewLayout.LayoutParams.MATCH_PARENT);
     }
 
     @Override
@@ -219,8 +217,6 @@ public final class CameraPreviewLayout extends FrameLayout {
         return p instanceof CameraPreviewLayout.LayoutParams;
     }
 
-
-
     public static class LayoutParams extends FrameLayout.LayoutParams {
         public static final int UNSPECIFIED_CARD_GRAVITY = -1;
 
@@ -231,18 +227,24 @@ public final class CameraPreviewLayout extends FrameLayout {
         public int cardGravity = UNSPECIFIED_CARD_GRAVITY;
 
 
+        @SuppressLint("CustomViewStyleable")
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
 
             // Pull the layout param values from the layout XML during
             // inflation.  This is not needed if you don't care about
             // changing the layout behavior in XML.
-            @SuppressLint("CustomViewStyleable")
-            TypedArray a = c.obtainStyledAttributes(attrs, R.styleable.wocr_CameraPreviewLayout_Layout);
-            if (a.hasValue(R.styleable.wocr_CameraPreviewLayout_Layout_wocr_layout_cardAlignGravity)) {
-                cardGravity = a.getInt(R.styleable.wocr_CameraPreviewLayout_Layout_wocr_layout_cardAlignGravity, Gravity.CENTER);
+            TypedArray a = null;
+            try {
+                a = c.obtainStyledAttributes(attrs, R.styleable.wocr_CameraPreviewLayout_Layout);
+                if (a.hasValue(R.styleable.wocr_CameraPreviewLayout_Layout_wocr_layout_cardAlignGravity)) {
+                    cardGravity = a.getInt(R.styleable.wocr_CameraPreviewLayout_Layout_wocr_layout_cardAlignGravity, Gravity.CENTER);
+                }
+            } finally {
+                if (a != null) {
+                    a.recycle();
+                }
             }
-            a.recycle();
         }
 
         public LayoutParams(int width, int height) {

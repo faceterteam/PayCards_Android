@@ -1,7 +1,7 @@
 package cards.pay.sample.demo.widget;
 
 import android.content.Context;
-import android.support.design.widget.TextInputEditText;
+import com.google.android.material.textfield.TextInputEditText;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;

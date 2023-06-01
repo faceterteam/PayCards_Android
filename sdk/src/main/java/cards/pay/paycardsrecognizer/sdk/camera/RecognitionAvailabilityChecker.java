@@ -3,8 +3,11 @@ package cards.pay.paycardsrecognizer.sdk.camera;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.support.annotation.RestrictTo;
-import android.support.v4.content.ContextCompat;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.core.content.ContextCompat;
+
 import android.util.Log;
 
 import com.facebook.device.yearclass.YearClass;
@@ -29,37 +32,14 @@ public final class RecognitionAvailabilityChecker {
         return doCheckInternal(context).build();
     }
 
-    public static Result doCheckBlocking(Context context) {
-        RecognitionCheckResultBuilder builder = doCheckInternal(context);
-        Result result = builder.build();
-        if (!builder.build().isAdditionalCheckRequired()) {
-            return result;
-        }
-
-        builder.isBlockingCheck(true);
-        builder.recognitionCoreSupported(RecognitionCore.getInstance(context).isDeviceSupported());
-        if (builder.recognitionCoreSupported == Result.STATUS_FAILED) {
-            return builder.build();
-        }
-
-        builder.isCameraSupported(CameraUtils.isCameraSupportedBlocking());
-
-        return builder.build();
-    }
-
     private static RecognitionCheckResultBuilder doCheckInternal(Context context) {
         RecognitionCheckResultBuilder builder = new RecognitionCheckResultBuilder()
                 .isBlockingCheck(false)
                 .isDeviceNewEnough(isDeviceNewEnough(context))
-                .hasCamera(isDeviceHasCamera(context))
-                .hasCameraPermission(ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
-                ;
+                .hasCamera(CameraUtils.isCameraSupported(context))
+                .hasCameraPermission(ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED);
 
-        try {
-            builder.isCameraSupported(CameraUtils.isCameraSupported());
-        } catch (BlockingOperationException e) {
-            // IGNORE
-        }
+        builder.isCameraSupported(CameraUtils.isCameraSupported(context));
 
         if (RecognitionCore.isInitialized()) {
             builder.recognitionCoreSupported(RecognitionCore.getInstance(context).isDeviceSupported());
@@ -72,13 +52,6 @@ public final class RecognitionAvailabilityChecker {
         int year = YearClass.get(context);
         if (DBG) Log.d(TAG, "Device year is: " + year);
         return year >= 2011;
-    }
-
-    public static boolean isDeviceHasCamera(Context context) {
-        PackageManager pm = context.getPackageManager();
-        boolean hasCameraFeature = pm.hasSystemFeature(PackageManager.FEATURE_CAMERA);
-        boolean hasAutofocus = pm.hasSystemFeature(PackageManager.FEATURE_CAMERA_AUTOFOCUS);
-        return hasCameraFeature/* && hasAutofocus*/;
     }
 
     public static class Result {
@@ -155,15 +128,20 @@ public final class RecognitionAvailabilityChecker {
 
         private String statusToString(int status) {
             switch (status) {
-                case STATUS_PASSED: return "yes";
-                case STATUS_FAILED: return "no";
-                case STATUS_NOT_CHECKED: return "not checked";
-                default: throw new IllegalArgumentException();
+                case STATUS_PASSED:
+                    return "yes";
+                case STATUS_FAILED:
+                    return "no";
+                case STATUS_NOT_CHECKED:
+                    return "not checked";
+                default:
+                    throw new IllegalArgumentException();
             }
         }
 
         public String getMessage() {
-            if (isDeviceNewEnough == STATUS_FAILED) return "Device is considered being too old for smooth camera experience, so camera will not be used.";
+            if (isDeviceNewEnough == STATUS_FAILED)
+                return "Device is considered being too old for smooth camera experience, so camera will not be used.";
             if (hasCamera == STATUS_FAILED) return "No camera";
             if (hasCameraPermission == STATUS_FAILED) return "No camera permission";
             if (isCameraSupported == STATUS_FAILED) return "Camera not supported";
@@ -171,6 +149,7 @@ public final class RecognitionAvailabilityChecker {
             return toString();
         }
 
+        @NonNull
         @Override
         public String toString() {
             return String.format(Locale.US, "Is new enough: %s, has camera: %s, has camera persmission: %s, recognition library supported: %s, camera supported: %s",
@@ -179,7 +158,7 @@ public final class RecognitionAvailabilityChecker {
                     statusToString(hasCameraPermission),
                     statusToString(recognitionCoreSupported),
                     statusToString(isCameraSupported)
-                    );
+            );
         }
     }
 
